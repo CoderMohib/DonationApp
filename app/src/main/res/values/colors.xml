@@ -5,41 +5,99 @@
     <color name="white">#FFFFFFFF</color>
 
     <!-- Material Design 3 Color Scheme -->
-    <!-- Primary Colors -->
-    <color name="primary">#6750A4</color>
+    <!-- Primary Colors - Modern Teal/Blue -->
+    <color name="primary">#0EA5E9</color>
+    <color name="primary_dark">#0284C7</color>
+    <color name="primary_light">#38BDF8</color>
     <color name="on_primary">#FFFFFF</color>
-    <color name="primary_container">#EADDFF</color>
-    <color name="on_primary_container">#21005D</color>
+    <color name="primary_container">#E0F2FE</color>
+    <color name="on_primary_container">#0C4A6E</color>
 
     <!-- Secondary Colors -->
-    <color name="secondary">#625B71</color>
+    <color name="secondary">#06B6D4</color>
+    <color name="secondary_dark">#0891B2</color>
     <color name="on_secondary">#FFFFFF</color>
-    <color name="secondary_container">#E8DEF8</color>
-    <color name="on_secondary_container">#1D192B</color>
+    <color name="secondary_container">#CFFAFE</color>
+    <color name="on_secondary_container">#164E63</color>
 
     <!-- Tertiary Colors -->
-    <color name="tertiary">#7D5260</color>
+    <color name="tertiary">#8B5CF6</color>
     <color name="on_tertiary">#FFFFFF</color>
-    <color name="tertiary_container">#FFD8E4</color>
-    <color name="on_tertiary_container">#31111D</color>
+    <color name="tertiary_container">#EDE9FE</color>
+    <color name="on_tertiary_container">#4C1D95</color>
+
+    <!-- Accent Colors -->
+    <color name="accent">#10B981</color>
+    <color name="accent_dark">#059669</color>
+    <color name="on_accent">#FFFFFF</color>
 
     <!-- Error Colors -->
-    <color name="error">#BA1A1A</color>
+    <color name="error">#EF4444</color>
+    <color name="error_dark">#DC2626</color>
     <color name="on_error">#FFFFFF</color>
-    <color name="error_container">#FFDAD6</color>
-    <color name="on_error_container">#410002</color>
+    <color name="error_container">#FEE2E2</color>
+    <color name="on_error_container">#991B1B</color>
 
     <!-- Surface Colors -->
-    <color name="surface">#FFFBFE</color>
-    <color name="on_surface">#1C1B1F</color>
-    <color name="surface_variant">#E7E0EC</color>
-    <color name="on_surface_variant">#49454F</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_dark">#F9FAFB</color>
+    <color name="on_surface">#111827</color>
+    <color name="on_surface_light">#6B7280</color>
+    <color name="surface_variant">#F3F4F6</color>
+    <color name="on_surface_variant">#4B5563</color>
+
+    <!-- Card Colors -->
+    <color name="card_background">#FFFFFF</color>
+    <color name="card_background_elevated">#FFFFFF</color>
+    <color name="on_card">#0F172A</color>
+    <color name="card_outline">#E2E8F0</color>
+    <color name="card_shadow">#1A0EA5E9</color>
 
     <!-- Background Colors -->
-    <color name="background">#FFFBFE</color>
-    <color name="on_background">#1C1B1F</color>
+    <color name="background">#FAFAFA</color>
+    <color name="background_gradient_start">#0EA5E9</color>
+    <color name="background_gradient_end">#06B6D4</color>
+    <color name="background_gradient_light_start">#E0F2FE</color>
+    <color name="background_gradient_light_end">#CFFAFE</color>
+    <color name="on_background">#0F172A</color>
+    <color name="on_background_secondary">#64748B</color>
 
     <!-- Outline Colors -->
-    <color name="outline">#79747E</color>
-    <color name="outline_variant">#CAC4D0</color>
+    <color name="outline">#CBD5E1</color>
+    <color name="outline_variant">#E2E8F0</color>
+    <color name="outline_focused">#0EA5E9</color>
+
+    <!-- Button Colors -->
+    <color name="button_primary">#E8896F</color>
+    <color name="button_primary_pressed">#D2765A</color>
+    <color name="button_secondary">#4A9DAB</color>
+    <color name="button_outline">#84C1C9</color>
+    <color name="on_button_primary">#FFFFFF</color>
+    <color name="on_button_secondary">#FFFFFF</color>
+
+    <!-- Input Field Colors -->
+    <color name="input_background">#FFFFFF</color>
+    <color name="input_outline">#E2E8F0</color>
+    <color name="input_outline_focused">#4A9DAB</color>
+    <color name="input_text">#1E293B</color>
+    <color name="input_hint">#94A3B8</color>
+    <color name="input_error">#EF4444</color>
+    <color name="input_background_focused">#F8FAFC</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="text_tertiary">#94A3B8</color>
+    <color name="text_on_primary">#FFFFFF</color>
+    <color name="text_link">#0EA5E9</color>
+    <color name="text_link_pressed">#0284C7</color>
+
+    <!-- Divider Colors -->
+    <color name="divider">#E5E7EB</color>
+    <color name="divider_light">#F3F4F6</color>
+
+    <!-- Shadow Colors -->
+    <color name="shadow_light">#1A000000</color>
+    <color name="shadow_medium">#33000000</color>
+    <color name="shadow_dark">#4D000000</color>
 </resources>

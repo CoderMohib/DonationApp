@@ -38,7 +38,40 @@
         <!-- Outline colors -->
         <item name="colorOutline">@color/outline</item>
         <item name="colorOutlineVariant">@color/outline_variant</item>
+
+        <!-- Material Design 3 Text Input Styling -->
+        <item name="textInputStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
+        
+        <!-- Button Styling -->
+        <item name="materialButtonStyle">@style/Widget.Material3.Button</item>
     </style>
 
     <style name="Theme.DonationApp" parent="Base.Theme.DonationApp" />
+
+    <!-- Text Input Style -->
+    <style name="TextInputLayoutStyle" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/input_outline_focused</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="boxCornerRadiusTopStart">@dimen/input_corner_radius</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/input_corner_radius</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/input_corner_radius</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/input_corner_radius</item>
+        <item name="hintTextColor">@color/input_hint</item>
+    </style>
+
+    <!-- Button Style -->
+    <style name="ButtonPrimaryStyle" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/button_primary</item>
+        <item name="android:textColor">@color/text_on_primary</item>
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Card Style -->
+    <style name="CardLoginStyle">
+        <item name="cardBackgroundColor">@color/card_background</item>
+        <item name="cardCornerRadius">@dimen/corner_radius_card</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+    </style>
 </resources>

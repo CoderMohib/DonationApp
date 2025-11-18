@@ -90,4 +90,35 @@
     <string name="profile_email">Email</string>
     <string name="profile_name">Name</string>
     <string name="profile_phone">Phone</string>
+
+    <!-- Login/Signup Welcome Messages -->
+    <string name="welcome_back">Welcome Back</string>
+    <string name="welcome_subtitle">Sign in to continue</string>
+    <string name="create_account">Create Account</string>
+    <string name="create_account_subtitle">Sign up to get started</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="remember_me">Remember me</string>
+
+    <!-- Color Theme Strings (for accessibility and theming) -->
+    <string name="color_primary">Primary Color</string>
+    <string name="color_secondary">Secondary Color</string>
+    <string name="color_accent">Accent Color</string>
+    <string name="color_background">Background Color</string>
+    <string name="color_surface">Surface Color</string>
+    <string name="color_text_primary">Primary Text Color</string>
+    <string name="color_text_secondary">Secondary Text Color</string>
+    <string name="color_button_primary">Primary Button Color</string>
+    <string name="color_button_secondary">Secondary Button Color</string>
+    <string name="color_input_background">Input Background Color</string>
+    <string name="color_input_outline">Input Outline Color</string>
+    <string name="color_card_background">Card Background Color</string>
+    <string name="color_gradient_start">Gradient Start Color</string>
+    <string name="color_gradient_end">Gradient End Color</string>
+
+    <!-- UI Descriptive Strings -->
+    <string name="app_tagline">Making a difference, one donation at a time</string>
+    <string name="login_description">Access your account to manage donations and campaigns</string>
+    <string name="signup_description">Join us and start making an impact today</string>
 </resources>

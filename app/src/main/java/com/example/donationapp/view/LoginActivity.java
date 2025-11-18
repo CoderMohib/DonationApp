@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText emailEditText;
     private TextInputEditText passwordEditText;
     private Button loginButton;
-    private Button signupButton;
+    private TextView signupButton;
     private ProgressBar progressBar;
     private AuthViewModel authViewModel;
 
@@ -36,6 +37,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Handle system window insets for notch/punch hole
+        // The layout uses fitsSystemWindows="true" which automatically handles insets
+        // This ensures content doesn't overlap with system UI elements
 
         // Initialize views
         emailLayout = findViewById(R.id.email_layout);

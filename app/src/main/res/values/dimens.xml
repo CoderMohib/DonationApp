@@ -29,5 +29,60 @@
     <dimen name="image_size_small">64dp</dimen>
     <dimen name="image_size_medium">128dp</dimen>
     <dimen name="image_size_large">256dp</dimen>
+
+    <!-- Login/Signup specific spacing (8dp grid system) -->
+    <dimen name="spacing_card_horizontal">24dp</dimen>
+    <dimen name="spacing_card_vertical">16dp</dimen>
+    <dimen name="spacing_card_internal">24dp</dimen>
+    <dimen name="spacing_logo_top">48dp</dimen>
+    <dimen name="spacing_logo_bottom">16dp</dimen>
+    <dimen name="spacing_title_bottom">8dp</dimen>
+    <dimen name="spacing_subtitle_bottom">32dp</dimen>
+    <dimen name="spacing_input_between">16dp</dimen>
+    <dimen name="spacing_button_top">32dp</dimen>
+    <dimen name="spacing_link_top">24dp</dimen>
+    <dimen name="spacing_forgot_password_top">12dp</dimen>
+    <dimen name="spacing_bottom_padding">32dp</dimen>
+
+    <!-- Card dimensions -->
+    <dimen name="card_width_max">400dp</dimen>
+    <dimen name="card_padding">24dp</dimen>
+    <dimen name="card_padding_horizontal">24dp</dimen>
+    <dimen name="card_padding_vertical">32dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="card_elevation_pressed">1dp</dimen>
+    <dimen name="card_elevation_hover">4dp</dimen>
+
+    <!-- Logo/Icon dimensions -->
+    <dimen name="logo_size">90dp</dimen>
+    <dimen name="logo_size_large">96dp</dimen>
+    <dimen name="logo_margin_bottom">24dp</dimen>
+
+    <!-- Button dimensions -->
+    <dimen name="button_height">56dp</dimen>
+    <dimen name="button_height_medium">48dp</dimen>
+    <dimen name="button_corner_radius">16dp</dimen>
+    <dimen name="button_padding_horizontal">24dp</dimen>
+    <dimen name="button_elevation">0dp</dimen>
+    <dimen name="button_elevation_pressed">0dp</dimen>
+
+    <!-- Input field dimensions -->
+    <dimen name="input_height">56dp</dimen>
+    <dimen name="input_corner_radius">16dp</dimen>
+    <dimen name="input_padding_horizontal">16dp</dimen>
+    <dimen name="input_stroke_width">1dp</dimen>
+    <dimen name="input_stroke_width_focused">2dp</dimen>
+
+    <!-- Text sizes for login/signup -->
+    <dimen name="text_size_welcome">28sp</dimen>
+    <dimen name="text_size_subtitle">15sp</dimen>
+    <dimen name="text_size_link">14sp</dimen>
+    <dimen name="text_size_body">16sp</dimen>
+    <dimen name="text_size_label">14sp</dimen>
+    
+    <!-- Line spacing -->
+    <dimen name="line_spacing_tight">1.2</dimen>
+    <dimen name="line_spacing_normal">1.5</dimen>
+    <dimen name="line_spacing_loose">1.8</dimen>
 </resources>
 
