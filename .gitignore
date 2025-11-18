@@ -1,0 +1,36 @@
+# Gradle
+.gradle/
+build/
+**/build/
+
+# Local configuration
+local.properties
+.idea/
+*.iml
+
+# Android Studio
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/gradle.xml
+/.idea/dictionaries
+*.ipr
+*.iws
+
+# Generated
+captures/
+externalNativeBuild/
+
+# Signing keys
+*.jks
+*.keystore
+keystore.properties
+
+# Misc
+*.log
+*.tmp
+
+# Google services
+google-services.json
