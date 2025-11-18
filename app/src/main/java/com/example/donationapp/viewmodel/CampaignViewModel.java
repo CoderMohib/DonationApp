@@ -141,6 +141,11 @@ public class CampaignViewModel extends AndroidViewModel {
      * Create new campaign
      */
     public void createCampaign(Campaign campaign) {
+        if (campaign == null) {
+            errorMessage.setValue("Campaign data is invalid");
+            return;
+        }
+        
         isLoading.setValue(true);
         errorMessage.setValue(null);
         
@@ -148,6 +153,8 @@ public class CampaignViewModel extends AndroidViewModel {
                 campaignId -> {
                     Log.d(TAG, "Campaign created: " + campaignId);
                     isLoading.setValue(false);
+                    // Clear error on success
+                    errorMessage.setValue(null);
                     // Campaigns list will update automatically via listener
                 },
                 exception -> {

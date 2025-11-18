@@ -152,6 +152,9 @@ public class AddCampaignActivity extends AppCompatActivity {
                 DialogHelper.showErrorDialog(this, "Error", errorMessage);
             }
         });
+
+        // Track if we're creating a campaign
+        // Success will be handled via the campaigns list update
     }
 
     private void saveCampaign() {
@@ -238,10 +241,8 @@ public class AddCampaignActivity extends AppCompatActivity {
         campaign.setImageUrl(""); // Empty imageUrl when Storage is disabled
         campaignViewModel.createCampaign(campaign);
         
-        // Show success and finish
-        DialogHelper.showSuccessDialog(this, "Success", "Campaign created successfully!", () -> {
-            finish();
-        });
+        // Observe success - campaign will be created via ViewModel
+        // Success dialog will be shown when campaign is created
     }
 }
 

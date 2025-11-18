@@ -469,26 +469,42 @@ public class FirebaseHelper {
      * Get user-friendly error message from Firebase Auth exception
      */
     private String getAuthErrorMessage(Exception exception) {
-        if (exception == null) return "Unknown error occurred";
-        
-        String errorMessage = exception.getMessage();
-        if (errorMessage == null) return "Unknown error occurred";
-
-        if (errorMessage.contains("email address is badly formatted")) {
-            return "Invalid email address";
-        } else if (errorMessage.contains("password should be at least 6 characters")) {
-            return "Password must be at least 6 characters";
-        } else if (errorMessage.contains("no user record")) {
-            return "No account found with this email";
-        } else if (errorMessage.contains("wrong password")) {
-            return "Incorrect password";
-        } else if (errorMessage.contains("email address is already in use")) {
-            return "Email already registered";
-        } else if (errorMessage.contains("network")) {
-            return "Network error. Please check your internet connection";
+        if (exception == null) {
+            return "Unknown error occurred";
         }
         
-        return errorMessage;
+        String errorMessage = exception.getMessage();
+        if (errorMessage == null) {
+            return "Unknown error occurred";
+        }
+
+        String lowerMessage = errorMessage.toLowerCase();
+        
+        if (lowerMessage.contains("email address is badly formatted") || 
+            lowerMessage.contains("invalid-email")) {
+            return "Invalid email address";
+        } else if (lowerMessage.contains("password should be at least") || 
+                   lowerMessage.contains("weak-password")) {
+            return "Password must be at least 6 characters";
+        } else if (lowerMessage.contains("no user record") || 
+                   lowerMessage.contains("user-not-found")) {
+            return "No account found with this email";
+        } else if (lowerMessage.contains("wrong password") || 
+                   lowerMessage.contains("wrong-password")) {
+            return "Incorrect password";
+        } else if (lowerMessage.contains("email address is already in use") || 
+                   lowerMessage.contains("email-already-in-use")) {
+            return "Email already registered";
+        } else if (lowerMessage.contains("network") || 
+                   lowerMessage.contains("network-error")) {
+            return "Network error. Please check your internet connection";
+        } else if (lowerMessage.contains("too-many-requests")) {
+            return "Too many attempts. Please try again later";
+        } else if (lowerMessage.contains("user-disabled")) {
+            return "This account has been disabled";
+        }
+        
+        return "Authentication failed. Please try again";
     }
 
     /**
@@ -502,20 +518,40 @@ public class FirebaseHelper {
      * Get user-friendly error message from Firestore exception
      */
     public String getFirestoreErrorMessage(Exception exception) {
-        if (exception == null) return "Unknown error occurred";
-        
-        String errorMessage = exception.getMessage();
-        if (errorMessage == null) return "Unknown error occurred";
-
-        if (errorMessage.contains("network")) {
-            return "Network error. Please check your internet connection";
-        } else if (errorMessage.contains("permission")) {
-            return "Permission denied";
-        } else if (errorMessage.contains("not found")) {
-            return "Resource not found";
+        if (exception == null) {
+            return "Unknown error occurred";
         }
         
-        return errorMessage;
+        String errorMessage = exception.getMessage();
+        if (errorMessage == null) {
+            return "Unknown error occurred";
+        }
+
+        String lowerMessage = errorMessage.toLowerCase();
+        
+        if (lowerMessage.contains("network") || 
+            lowerMessage.contains("unavailable")) {
+            return "Network error. Please check your internet connection";
+        } else if (lowerMessage.contains("permission") || 
+                   lowerMessage.contains("permission-denied")) {
+            return "Permission denied. You don't have access to this resource";
+        } else if (lowerMessage.contains("not found") || 
+                   lowerMessage.contains("not-found")) {
+            return "Resource not found";
+        } else if (lowerMessage.contains("deadline-exceeded") || 
+                   lowerMessage.contains("timeout")) {
+            return "Request timed out. Please try again";
+        } else if (lowerMessage.contains("already-exists")) {
+            return "This resource already exists";
+        } else if (lowerMessage.contains("failed-precondition")) {
+            return "Operation failed. Please check your data";
+        } else if (lowerMessage.contains("out-of-range")) {
+            return "Invalid data provided";
+        } else if (lowerMessage.contains("unauthenticated")) {
+            return "Please sign in to continue";
+        }
+        
+        return "An error occurred. Please try again";
     }
 }
 

@@ -52,24 +52,24 @@ public class SplashActivity extends AppCompatActivity {
     private void checkUserRoleAndRedirect() {
         User currentUser = authViewModel.getCurrentUser().getValue();
         if (currentUser != null) {
-            if (currentUser.isAdmin()) {
-                redirectToAdminDashboard();
-            } else {
-                redirectToUserDashboard();
-            }
+            redirectBasedOnRole(currentUser);
         } else {
-            // User data not loaded yet, wait a bit more
+            // User data not loaded yet, observe for changes
             authViewModel.getCurrentUser().observe(this, user -> {
                 if (user != null) {
-                    if (user.isAdmin()) {
-                        redirectToAdminDashboard();
-                    } else {
-                        redirectToUserDashboard();
-                    }
+                    redirectBasedOnRole(user);
                 } else {
                     redirectToLogin();
                 }
             });
+        }
+    }
+
+    private void redirectBasedOnRole(User user) {
+        if (user.isAdmin()) {
+            redirectToAdminDashboard();
+        } else {
+            redirectToUserDashboard();
         }
     }
 

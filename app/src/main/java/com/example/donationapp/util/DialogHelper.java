@@ -21,13 +21,18 @@ public class DialogHelper {
      * Show error dialog
      */
     public static void showErrorDialog(Context context, String title, String message) {
-        if (context == null || ((Activity) context).isFinishing()) {
+        if (context == null || !(context instanceof Activity)) {
+            return;
+        }
+        
+        Activity activity = (Activity) context;
+        if (activity.isFinishing() || activity.isDestroyed()) {
             return;
         }
 
         new MaterialAlertDialogBuilder(context)
-                .setTitle(title)
-                .setMessage(message)
+                .setTitle(title != null ? title : "Error")
+                .setMessage(message != null ? message : "An error occurred")
                 .setPositiveButton("OK", null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
@@ -38,13 +43,18 @@ public class DialogHelper {
      */
     public static void showErrorDialogWithRetry(Context context, String title, String message,
                                                 Runnable onRetry) {
-        if (context == null || ((Activity) context).isFinishing()) {
+        if (context == null || !(context instanceof Activity)) {
+            return;
+        }
+        
+        Activity activity = (Activity) context;
+        if (activity.isFinishing() || activity.isDestroyed()) {
             return;
         }
 
         new MaterialAlertDialogBuilder(context)
-                .setTitle(title)
-                .setMessage(message)
+                .setTitle(title != null ? title : "Error")
+                .setMessage(message != null ? message : "An error occurred")
                 .setPositiveButton("Retry", (dialog, which) -> {
                     if (onRetry != null) {
                         onRetry.run();
@@ -60,13 +70,18 @@ public class DialogHelper {
      */
     public static void showSuccessDialog(Context context, String title, String message,
                                        Runnable onDismiss) {
-        if (context == null || ((Activity) context).isFinishing()) {
+        if (context == null || !(context instanceof Activity)) {
+            return;
+        }
+        
+        Activity activity = (Activity) context;
+        if (activity.isFinishing() || activity.isDestroyed()) {
             return;
         }
 
         new MaterialAlertDialogBuilder(context)
-                .setTitle(title)
-                .setMessage(message)
+                .setTitle(title != null ? title : "Success")
+                .setMessage(message != null ? message : "Operation completed successfully")
                 .setPositiveButton("OK", (dialog, which) -> {
                     if (onDismiss != null) {
                         onDismiss.run();
@@ -127,7 +142,12 @@ public class DialogHelper {
      * Returns the AlertDialog so it can be dismissed
      */
     public static AlertDialog showLoadingDialog(Context context, String message) {
-        if (context == null || ((Activity) context).isFinishing()) {
+        if (context == null || !(context instanceof Activity)) {
+            return null;
+        }
+        
+        Activity activity = (Activity) context;
+        if (activity.isFinishing() || activity.isDestroyed()) {
             return null;
         }
 

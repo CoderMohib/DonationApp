@@ -114,17 +114,31 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
         }
 
         public void bind(Campaign campaign) {
-            titleText.setText(campaign.getTitle());
-            descriptionText.setText(campaign.getDescription());
+            if (campaign == null) {
+                return;
+            }
+
+            // Set text fields with null safety
+            String title = campaign.getTitle();
+            titleText.setText(title != null ? title : "");
+
+            String description = campaign.getDescription();
+            descriptionText.setText(description != null ? description : "");
+
             goalAmountText.setText("Goal: " + currencyFormat.format(campaign.getGoalAmount()));
             collectedAmountText.setText("Collected: " + currencyFormat.format(campaign.getCollectedAmount()));
             
             int progress = campaign.getProgressPercentage();
             progressText.setText(progress + "%");
 
-            // Load image
-            if (campaign.getImageUrl() != null && !campaign.getImageUrl().isEmpty()) {
-                Picasso.get().load(campaign.getImageUrl()).into(campaignImage);
+            // Load image with error handling
+            String imageUrl = campaign.getImageUrl();
+            if (imageUrl != null && !imageUrl.isEmpty()) {
+                Picasso.get()
+                        .load(imageUrl)
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .error(R.drawable.ic_launcher_background)
+                        .into(campaignImage);
             } else {
                 campaignImage.setImageResource(R.drawable.ic_launcher_background);
             }
