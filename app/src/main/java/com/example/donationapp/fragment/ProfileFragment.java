@@ -1,18 +1,21 @@
-package com.example.donationapp.view;
+package com.example.donationapp.fragment;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.donationapp.R;
@@ -21,8 +24,11 @@ import com.example.donationapp.util.DialogHelper;
 import com.example.donationapp.util.FirebaseHelper;
 import com.example.donationapp.util.ImageHelper;
 import com.example.donationapp.util.Validator;
+import com.example.donationapp.util.WindowInsetsHelper;
+import com.example.donationapp.view.SplashActivity;
 import com.example.donationapp.viewmodel.AuthViewModel;
 import com.example.donationapp.viewmodel.ProfileViewModel;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,9 +37,9 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 
 /**
- * Profile Activity - Displays and allows editing of user profile
+ * Profile Fragment - Displays and allows editing of user profile
  */
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileFragment extends Fragment {
     private ImageView profileImage;
     private TextView emailText;
     private TextInputLayout nameLayout;
@@ -42,7 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextInputEditText phoneEditText;
     private Button editImageButton;
     private Button saveButton;
-    private ProgressBar progressBar;
+    private CircularProgressIndicator progressBar;
     
     private AuthViewModel authViewModel;
     private ProfileViewModel profileViewModel;
@@ -54,30 +60,41 @@ public class ProfileActivity extends AppCompatActivity {
     private ActivityResultLauncher<Uri> cameraLauncher;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_profile, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Apply window insets
+        WindowInsetsHelper.applyWindowInsetsTop(view);
 
         // Initialize views
-        profileImage = findViewById(R.id.profile_image);
-        emailText = findViewById(R.id.email_text);
-        nameLayout = findViewById(R.id.name_layout);
-        phoneLayout = findViewById(R.id.phone_layout);
-        nameEditText = findViewById(R.id.name_edit_text);
-        phoneEditText = findViewById(R.id.phone_edit_text);
-        editImageButton = findViewById(R.id.edit_image_button);
-        saveButton = findViewById(R.id.save_button);
-        progressBar = findViewById(R.id.progress_bar);
+        profileImage = view.findViewById(R.id.profile_image);
+        emailText = view.findViewById(R.id.email_text);
+        nameLayout = view.findViewById(R.id.name_layout);
+        phoneLayout = view.findViewById(R.id.phone_layout);
+        nameEditText = view.findViewById(R.id.name_edit_text);
+        phoneEditText = view.findViewById(R.id.phone_edit_text);
+        editImageButton = view.findViewById(R.id.edit_image_button);
+        saveButton = view.findViewById(R.id.save_button);
+        progressBar = view.findViewById(R.id.progress_bar);
 
-        // Initialize ViewModels
-        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
-        profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+        // Initialize ViewModels - safely get activity
+        if (getActivity() == null) {
+            return;
+        }
+        authViewModel = new ViewModelProvider(getActivity()).get(AuthViewModel.class);
+        profileViewModel = new ViewModelProvider(getActivity()).get(ProfileViewModel.class);
 
         // Setup image picker launcher
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    if (result.getResultCode() == getActivity().RESULT_OK && result.getData() != null) {
                         Uri uri = result.getData().getData();
                         if (uri != null) {
                             handleImageSelection(uri);
@@ -110,28 +127,34 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void observeViewModels() {
-        profileViewModel.getUserProfile().observe(this, user -> {
+        profileViewModel.getUserProfile().observe(getViewLifecycleOwner(), user -> {
             if (user != null) {
                 populateForm(user);
             }
         });
 
-        profileViewModel.getIsLoading().observe(this, isLoading -> {
+        profileViewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading != null) {
                 progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
                 saveButton.setEnabled(!isLoading);
             }
         });
 
-        profileViewModel.getErrorMessage().observe(this, errorMessage -> {
+        profileViewModel.getErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
             if (errorMessage != null && !errorMessage.isEmpty()) {
-                DialogHelper.showErrorDialog(this, "Error", errorMessage);
+                android.content.Context context = getContext();
+                if (context != null) {
+                    DialogHelper.showErrorDialog(context, "Error", errorMessage);
+                }
             }
         });
 
-        profileViewModel.getUpdateSuccess().observe(this, success -> {
+        profileViewModel.getUpdateSuccess().observe(getViewLifecycleOwner(), success -> {
             if (success != null && success) {
-                DialogHelper.showSuccessDialog(this, "Success", "Profile updated successfully!", null);
+                android.content.Context context = getContext();
+                if (context != null) {
+                    DialogHelper.showSuccessDialog(context, "Success", "Profile updated successfully!", null);
+                }
             }
         });
     }
@@ -147,8 +170,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void showImageSourceDialog() {
+        android.content.Context context = getContext();
+        if (context == null) return;
+        
         String[] options = {"Camera", "Gallery"};
-        new androidx.appcompat.app.AlertDialog.Builder(this)
+        new androidx.appcompat.app.AlertDialog.Builder(context)
                 .setTitle("Select Image Source")
                 .setItems(options, (dialog, which) -> {
                     if (which == 0) {
@@ -161,12 +187,15 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void openCamera() {
+        android.content.Context context = getContext();
+        if (context == null) return;
+        
         try {
-            File imageFile = ImageHelper.createImageFile(this);
-            imageUri = ImageHelper.getFileProviderUri(this, imageFile);
+            File imageFile = ImageHelper.createImageFile(context);
+            imageUri = ImageHelper.getFileProviderUri(context, imageFile);
             cameraLauncher.launch(imageUri);
         } catch (Exception e) {
-            DialogHelper.showErrorDialog(this, "Error", "Error opening camera");
+            DialogHelper.showErrorDialog(context, "Error", "Error opening camera");
         }
     }
 
@@ -176,8 +205,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void handleImageSelection(Uri uri) {
+        android.content.Context context = getContext();
+        if (context == null) return;
+        
         imageUri = uri;
-        imageBytes = ImageHelper.uriToByteArray(this, uri);
+        imageBytes = ImageHelper.uriToByteArray(context, uri);
         if (imageBytes != null) {
             profileImage.setImageURI(uri);
             imageChanged = true;
@@ -215,37 +247,12 @@ public class ProfileActivity extends AppCompatActivity {
         // Get current user
         FirebaseUser currentUser = FirebaseHelper.getInstance().getCurrentUser();
         if (currentUser == null) {
-            DialogHelper.showErrorDialog(this, "Error", "User not authenticated");
+            android.content.Context context = getContext();
+            if (context != null) {
+                DialogHelper.showErrorDialog(context, "Error", "User not authenticated");
+            }
             return;
         }
-
-        // TODO: Uncomment when Firebase Storage is enabled
-        // Original Firebase Storage upload code (commented out temporarily)
-        // // If image changed, upload new image first
-        // if (imageChanged && imageBytes != null) {
-        //     byte[] compressedImage = ImageHelper.compressImage(imageBytes);
-        //     String imagePath = "profiles/" + currentUser.getUid() + "_" + System.currentTimeMillis() + ".jpg";
-        //     
-        //     FirebaseHelper.getInstance().uploadImage(compressedImage, imagePath,
-        //             imageUrl -> {
-        //                 profileViewModel.updateProfileImage(currentUser.getUid(), imageUrl);
-        //                 // Also update name and phone
-        //                 profileViewModel.updateUserName(currentUser.getUid(), name);
-        //                 if (!phone.isEmpty()) {
-        //                     profileViewModel.updateUserPhone(currentUser.getUid(), phone);
-        //                 }
-        //             },
-        //             exception -> {
-        //                 DialogHelper.showErrorDialog(this, "Error", "Failed to upload image");
-        //             },
-        //             null);
-        // } else {
-        //     // No image change, just update name and phone
-        //     profileViewModel.updateUserName(currentUser.getUid(), name);
-        //     if (!phone.isEmpty()) {
-        //         profileViewModel.updateUserPhone(currentUser.getUid(), phone);
-        //     }
-        // }
 
         // Temporary fallback: Update profile without image upload (works without Storage)
         // If image was changed, set profileImage to empty (image won't be uploaded)

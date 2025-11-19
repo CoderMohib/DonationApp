@@ -1,11 +1,11 @@
 package com.example.donationapp.view;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,7 +16,10 @@ import com.example.donationapp.R;
 import com.example.donationapp.model.User;
 import com.example.donationapp.util.DialogHelper;
 import com.example.donationapp.util.Validator;
+import com.example.donationapp.util.WindowInsetsHelper;
 import com.example.donationapp.viewmodel.AuthViewModel;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -32,19 +35,20 @@ public class SignupActivity extends AppCompatActivity {
     private TextInputEditText emailEditText;
     private TextInputEditText passwordEditText;
     private TextInputEditText confirmPasswordEditText;
-    private Button signupButton;
+    private MaterialButton signupButton;
     private TextView loginButton;
-    private ProgressBar progressBar;
+    private CircularProgressIndicator signupProgressIndicator;
     private AuthViewModel authViewModel;
+    private ObjectAnimator progressAnimator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        // Handle system window insets for notch/punch hole
-        // The layout uses fitsSystemWindows="true" which automatically handles insets
-        // This ensures content doesn't overlap with system UI elements
+        // Apply window insets for notch/punch hole camera
+        View rootView = findViewById(android.R.id.content);
+        WindowInsetsHelper.applyWindowInsets(rootView);
 
         // Initialize views
         nameLayout = findViewById(R.id.name_layout);
@@ -57,7 +61,7 @@ public class SignupActivity extends AppCompatActivity {
         confirmPasswordEditText = findViewById(R.id.confirm_password_edit_text);
         signupButton = findViewById(R.id.signup_button);
         loginButton = findViewById(R.id.login_button);
-        progressBar = findViewById(R.id.progress_bar);
+        signupProgressIndicator = findViewById(R.id.signup_progress_indicator);
 
         // Initialize ViewModel
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
@@ -102,8 +106,30 @@ public class SignupActivity extends AppCompatActivity {
     private void observeViewModel() {
         authViewModel.getIsLoading().observe(this, isLoading -> {
             if (isLoading != null) {
-                progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-                signupButton.setEnabled(!isLoading);
+                if (isLoading) {
+                    // Show loading indicator and hide button text
+                    signupProgressIndicator.setVisibility(View.VISIBLE);
+                    signupProgressIndicator.setProgress(0);
+                    signupButton.setText("");
+                    signupButton.setEnabled(false);
+                    
+                    // Animate progress from 0 to 100
+                    if (progressAnimator != null) {
+                        progressAnimator.cancel();
+                    }
+                    progressAnimator = ObjectAnimator.ofInt(signupProgressIndicator, "progress", 0, 100);
+                    progressAnimator.setDuration(2500); // 2.5 seconds
+                    progressAnimator.start();
+                } else {
+                    // Hide loading indicator and show button text
+                    if (progressAnimator != null) {
+                        progressAnimator.cancel();
+                    }
+                    signupProgressIndicator.setProgress(0);
+                    signupProgressIndicator.setVisibility(View.GONE);
+                    signupButton.setText(R.string.signup_button);
+                    signupButton.setEnabled(true);
+                }
             }
         });
 
@@ -117,7 +143,7 @@ public class SignupActivity extends AppCompatActivity {
             if (user != null) {
                 // Signup successful, redirect to user dashboard
                 DialogHelper.showSuccessDialog(this, "Success", "Account created successfully!", () -> {
-                    Intent intent = new Intent(SignupActivity.this, UserDashboardActivity.class);
+                    Intent intent = new Intent(SignupActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();

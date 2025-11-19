@@ -79,6 +79,8 @@
     <dimen name="text_size_link">14sp</dimen>
     <dimen name="text_size_body">16sp</dimen>
     <dimen name="text_size_label">14sp</dimen>
+    <dimen name="text_size_heading">24sp</dimen>
+    <dimen name="text_size_button">16sp</dimen>
     
     <!-- Line spacing -->
     <dimen name="line_spacing_tight">1.2</dimen>

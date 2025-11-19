@@ -22,21 +22,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DonationApp">
         
-        <!-- Main Activity -->
+        <!-- Main Activity (User) -->
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".view.MainActivity"
+            android:exported="false"
+            android:parentActivityName=".view.SplashActivity" />
+        
+        <!-- Admin Main Activity -->
+        <activity
+            android:name=".view.AdminMainActivity"
+            android:exported="false"
+            android:parentActivityName=".view.SplashActivity" />
+
+        <!-- Splash Activity (Launcher) -->
+        <activity
+            android:name=".view.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.DonationApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- Splash Activity -->
-        <activity
-            android:name=".view.SplashActivity"
-            android:exported="false"
-            android:theme="@style/Theme.DonationApp" />
 
         <!-- Authentication Activities -->
         <activity
@@ -47,42 +54,30 @@
             android:name=".view.SignupActivity"
             android:exported="false"
             android:parentActivityName=".view.LoginActivity" />
-
-        <!-- Dashboard Activities -->
         <activity
-            android:name=".view.UserDashboardActivity"
+            android:name=".view.ForgotPasswordActivity"
             android:exported="false"
-            android:parentActivityName=".view.SplashActivity" />
-        <activity
-            android:name=".view.AdminDashboardActivity"
-            android:exported="false"
-            android:parentActivityName=".view.SplashActivity" />
+            android:parentActivityName=".view.LoginActivity" />
 
         <!-- Campaign Activities -->
         <activity
             android:name=".view.CampaignDetailActivity"
             android:exported="false"
-            android:parentActivityName=".view.UserDashboardActivity" />
+            android:parentActivityName=".view.MainActivity" />
         <activity
             android:name=".view.AddCampaignActivity"
             android:exported="false"
-            android:parentActivityName=".view.AdminDashboardActivity" />
+            android:parentActivityName=".view.AdminMainActivity" />
         <activity
             android:name=".view.EditCampaignActivity"
             android:exported="false"
-            android:parentActivityName=".view.AdminDashboardActivity" />
+            android:parentActivityName=".view.AdminMainActivity" />
 
         <!-- Donation Activity -->
         <activity
             android:name=".view.DonateActivity"
             android:exported="false"
             android:parentActivityName=".view.CampaignDetailActivity" />
-
-        <!-- Profile Activity -->
-        <activity
-            android:name=".view.ProfileActivity"
-            android:exported="false"
-            android:parentActivityName=".view.UserDashboardActivity" />
 
         <!-- FileProvider for image sharing -->
         <provider

@@ -15,7 +15,7 @@
     <string name="profile">Profile</string>
 
     <!-- Button Labels -->
-    <string name="login_button">Login</string>
+    <string name="login_button">Sign In</string>
     <string name="signup_button">Sign Up</string>
     <string name="donate_button">Donate Now</string>
     <string name="add_campaign_button">Add Campaign</string>
@@ -90,6 +90,7 @@
     <string name="profile_email">Email</string>
     <string name="profile_name">Name</string>
     <string name="profile_phone">Phone</string>
+    <string name="profile_info">Profile Information</string>
 
     <!-- Login/Signup Welcome Messages -->
     <string name="welcome_back">Welcome Back</string>
@@ -98,7 +99,10 @@
     <string name="create_account_subtitle">Sign up to get started</string>
     <string name="already_have_account">Already have an account?</string>
     <string name="dont_have_account">Don\'t have an account?</string>
-    <string name="forgot_password">Forgot Password?</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="forgot_password_subtitle">Enter your email to receive a reset link</string>
+    <string name="reset_password_button">Send Reset Link</string>
+    <string name="back_to_login">Back to Login</string>
     <string name="remember_me">Remember me</string>
 
     <!-- Color Theme Strings (for accessibility and theming) -->

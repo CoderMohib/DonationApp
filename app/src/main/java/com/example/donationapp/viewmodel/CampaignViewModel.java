@@ -1,6 +1,8 @@
 package com.example.donationapp.viewmodel;
 
 import android.app.Application;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -30,7 +32,12 @@ public class CampaignViewModel extends AndroidViewModel {
     private MutableLiveData<List<Campaign>> campaigns = new MutableLiveData<>();
     private MutableLiveData<Campaign> selectedCampaign = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isSearching = new MutableLiveData<>();
     private MutableLiveData<String> errorMessage = new MutableLiveData<>();
+    private List<Campaign> allCampaigns = new ArrayList<>(); // Store all campaigns for filtering
+    private String currentSearchQuery = "";
+    private Handler searchHandler = new Handler(Looper.getMainLooper());
+    private Runnable searchRunnable;
 
     public CampaignViewModel(@NonNull Application application) {
         super(application);
@@ -75,7 +82,9 @@ public class CampaignViewModel extends AndroidViewModel {
                             campaign.setId(doc.getId());
                             campaignList.add(campaign);
                         }
-                        campaigns.setValue(campaignList);
+                        allCampaigns = campaignList;
+                        // Apply current search filter if any
+                        applySearchFilter();
                         isLoading.setValue(false);
                     }
                 });
@@ -108,7 +117,9 @@ public class CampaignViewModel extends AndroidViewModel {
                             campaignList.add(campaign);
                         }
                     }
-                    campaigns.setValue(campaignList);
+                    allCampaigns = campaignList;
+                    // Apply current search filter if any
+                    applySearchFilter();
                     isLoading.setValue(false);
                 },
                 exception -> {
@@ -255,6 +266,80 @@ public class CampaignViewModel extends AndroidViewModel {
 
     public LiveData<String> getErrorMessage() {
         return errorMessage;
+    }
+
+    public LiveData<Boolean> getIsSearching() {
+        return isSearching;
+    }
+
+    /**
+     * Search campaigns by query string
+     * Filters campaigns by title and description
+     */
+    public void searchCampaigns(String query) {
+        if (query == null) {
+            query = "";
+        }
+        String newQuery = query.trim().toLowerCase();
+        
+        // Cancel previous search if any
+        if (searchRunnable != null) {
+            searchHandler.removeCallbacks(searchRunnable);
+        }
+        
+        // If query is empty, clear search immediately
+        if (newQuery.isEmpty()) {
+            currentSearchQuery = "";
+            applySearchFilter();
+            isSearching.setValue(false);
+            return;
+        }
+        
+        // Show loader if query is different from current
+        if (!newQuery.equals(currentSearchQuery)) {
+            isSearching.setValue(true);
+        }
+        
+        currentSearchQuery = newQuery;
+        
+        // Debounce search to show loader briefly
+        searchRunnable = () -> {
+            applySearchFilter();
+            isSearching.setValue(false);
+        };
+        
+        // Post with small delay to ensure loader is visible
+        searchHandler.postDelayed(searchRunnable, 150);
+    }
+
+    /**
+     * Apply search filter to campaigns
+     */
+    private void applySearchFilter() {
+        if (currentSearchQuery.isEmpty()) {
+            campaigns.setValue(allCampaigns);
+            return;
+        }
+
+        List<Campaign> filteredCampaigns = new ArrayList<>();
+        for (Campaign campaign : allCampaigns) {
+            String title = campaign.getTitle() != null ? campaign.getTitle().toLowerCase() : "";
+            String description = campaign.getDescription() != null ? campaign.getDescription().toLowerCase() : "";
+            
+            if (title.contains(currentSearchQuery) || description.contains(currentSearchQuery)) {
+                filteredCampaigns.add(campaign);
+            }
+        }
+        campaigns.setValue(filteredCampaigns);
+    }
+
+    /**
+     * Clear search and show all campaigns
+     */
+    public void clearSearch() {
+        currentSearchQuery = "";
+        campaigns.setValue(allCampaigns);
+        isSearching.setValue(false);
     }
 }
 

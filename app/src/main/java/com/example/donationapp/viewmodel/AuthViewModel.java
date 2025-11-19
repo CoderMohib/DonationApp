@@ -24,6 +24,7 @@ public class AuthViewModel extends AndroidViewModel {
     private MutableLiveData<String> errorMessage = new MutableLiveData<>();
     private MutableLiveData<User> currentUser = new MutableLiveData<>();
     private MutableLiveData<Boolean> isAuthenticated = new MutableLiveData<>();
+    private MutableLiveData<Boolean> resetPasswordSuccess = new MutableLiveData<>();
 
     public AuthViewModel(@NonNull Application application) {
         super(application);
@@ -104,6 +105,27 @@ public class AuthViewModel extends AndroidViewModel {
     }
 
     /**
+     * Send password reset email
+     */
+    public void resetPassword(String email) {
+        isLoading.setValue(true);
+        errorMessage.setValue(null);
+        resetPasswordSuccess.setValue(false);
+
+        firebaseHelper.sendPasswordResetEmail(email,
+                aVoid -> {
+                    isLoading.setValue(false);
+                    resetPasswordSuccess.setValue(true);
+                },
+                exception -> {
+                    Log.e(TAG, "Reset password failed", exception);
+                    errorMessage.setValue(firebaseHelper.getFirestoreErrorMessage(exception));
+                    isLoading.setValue(false);
+                    resetPasswordSuccess.setValue(false);
+                });
+    }
+
+    /**
      * Sign out current user
      */
     public void signOut() {
@@ -137,6 +159,10 @@ public class AuthViewModel extends AndroidViewModel {
 
     public LiveData<Boolean> getIsAuthenticated() {
         return isAuthenticated;
+    }
+
+    public LiveData<Boolean> getResetPasswordSuccess() {
+        return resetPasswordSuccess;
     }
 
     /**

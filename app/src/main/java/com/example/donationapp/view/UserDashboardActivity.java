@@ -1,5 +1,6 @@
 package com.example.donationapp.view;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +23,7 @@ import com.example.donationapp.util.DialogHelper;
 import com.example.donationapp.viewmodel.CampaignViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import java.util.List;
 
@@ -34,7 +37,10 @@ public class UserDashboardActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private TextView emptyStateText;
     private BottomNavigationView bottomNavigation;
+    private SearchView searchView;
+    private CircularProgressIndicator searchProgressIndicator;
     private CampaignViewModel campaignViewModel;
+    private ObjectAnimator searchProgressAnimator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +53,8 @@ public class UserDashboardActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar);
         emptyStateText = findViewById(R.id.empty_state_text);
         bottomNavigation = findViewById(R.id.bottom_navigation);
+        searchView = findViewById(R.id.search_view);
+        searchProgressIndicator = findViewById(R.id.search_progress_indicator);
 
         // Setup RecyclerView
         campaignAdapter = new CampaignAdapter(campaign -> {
@@ -84,8 +92,32 @@ public class UserDashboardActivity extends AppCompatActivity {
             return false;
         });
 
+        // Setup search view
+        setupSearchView();
+
         // Load campaigns
         campaignViewModel.startListeningToCampaigns();
+    }
+
+    private void setupSearchView() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                campaignViewModel.searchCampaigns(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                campaignViewModel.searchCampaigns(newText);
+                return true;
+            }
+        });
+
+        searchView.setOnCloseListener(() -> {
+            campaignViewModel.clearSearch();
+            return false;
+        });
     }
 
     private void observeViewModel() {
@@ -100,6 +132,29 @@ public class UserDashboardActivity extends AppCompatActivity {
         campaignViewModel.getIsLoading().observe(this, isLoading -> {
             if (isLoading != null) {
                 progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+            }
+        });
+
+        campaignViewModel.getIsSearching().observe(this, isSearching -> {
+            if (isSearching != null) {
+                if (isSearching) {
+                    searchProgressIndicator.setVisibility(View.VISIBLE);
+                    searchProgressIndicator.setProgress(0);
+                    
+                    // Animate progress from 0 to 100
+                    if (searchProgressAnimator != null) {
+                        searchProgressAnimator.cancel();
+                    }
+                    searchProgressAnimator = ObjectAnimator.ofInt(searchProgressIndicator, "progress", 0, 100);
+                    searchProgressAnimator.setDuration(1500); // 1.5 seconds for search
+                    searchProgressAnimator.start();
+                } else {
+                    if (searchProgressAnimator != null) {
+                        searchProgressAnimator.cancel();
+                    }
+                    searchProgressIndicator.setProgress(0);
+                    searchProgressIndicator.setVisibility(View.GONE);
+                }
             }
         });
 

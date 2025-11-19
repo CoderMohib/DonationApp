@@ -112,6 +112,29 @@ public class FirebaseHelper {
         Log.d(TAG, "User signed out");
     }
 
+    /**
+     * Send password reset email
+     */
+    public void sendPasswordResetEmail(String email,
+                                     OnSuccessListener<Void> onSuccess,
+                                     OnFailureListener onFailure) {
+        auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "Password reset email sent");
+                        if (onSuccess != null) {
+                            onSuccess.onSuccess(null);
+                        }
+                    } else {
+                        String errorMessage = getAuthErrorMessage(task.getException());
+                        Log.e(TAG, "Failed to send reset email: " + errorMessage);
+                        if (onFailure != null) {
+                            onFailure.onFailure(task.getException());
+                        }
+                    }
+                });
+    }
+
     // ==================== User Document Methods ====================
 
     /**

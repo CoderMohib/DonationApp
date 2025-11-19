@@ -1,5 +1,6 @@
 package com.example.donationapp.util;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import androidx.appcompat.app.AlertDialog;
@@ -158,6 +159,17 @@ public class DialogHelper {
         TextView messageView = view.findViewById(R.id.loading_message);
         if (messageView != null && message != null) {
             messageView.setText(message);
+        }
+        
+        // Setup progress animation
+        CircularProgressIndicator progressIndicator = view.findViewById(R.id.loading_progress_indicator);
+        if (progressIndicator != null) {
+            progressIndicator.setProgress(0);
+            ObjectAnimator progressAnimator = ObjectAnimator.ofInt(progressIndicator, "progress", 0, 100);
+            progressAnimator.setDuration(2500); // 2.5 seconds
+            progressAnimator.setRepeatCount(ObjectAnimator.INFINITE);
+            progressAnimator.setRepeatMode(ObjectAnimator.RESTART);
+            progressAnimator.start();
         }
 
         AlertDialog dialog = new MaterialAlertDialogBuilder(context)

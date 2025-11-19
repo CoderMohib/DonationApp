@@ -3,9 +3,10 @@
 A modern, feature-rich Android donation application built with Firebase backend, Material Design 3, and MVVM architecture pattern. This app enables organizations to create donation campaigns and allows users to browse and contribute to causes they care about.
 
 ![Android](https://img.shields.io/badge/Android-24%2B-green.svg)
-![Kotlin](https://img.shields.io/badge/Java-11-orange.svg)
+![Java](https://img.shields.io/badge/Java-11-orange.svg)
 ![Firebase](https://img.shields.io/badge/Firebase-33.7.0-yellow.svg)
-![License](https://img.shields.io/badge/License-Educational-blue.svg)
+![MVVM](https://img.shields.io/badge/Architecture-MVVM-blue.svg)
+![License](https://img.shields.io/badge/License-Educational-purple.svg)
 
 ---
 
@@ -31,6 +32,7 @@ A modern, feature-rich Android donation application built with Firebase backend,
 
 ### 🔐 Authentication
 - **Email/Password Authentication** - Secure user registration and login
+- **Password Recovery** - Forgot password functionality with email reset
 - **Role-Based Access Control** - Separate dashboards for users and admins
 - **Session Management** - Automatic authentication state handling
 - **Profile Management** - Update name, phone, and profile picture
@@ -51,6 +53,8 @@ A modern, feature-rich Android donation application built with Firebase backend,
 
 ### 🎨 User Experience
 - **Material Design 3** - Modern, beautiful UI following Material Design guidelines
+- **Bottom Navigation** - Easy navigation between Home, Donation History, and Profile
+- **Fragment-based Architecture** - Smooth transitions and efficient memory usage
 - **Swipe to Refresh** - Pull-to-refresh functionality for campaign lists
 - **Empty States** - Helpful messages when no data is available
 - **Error Handling** - User-friendly error messages throughout the app
@@ -60,44 +64,46 @@ A modern, feature-rich Android donation application built with Firebase backend,
 
 ## 🏗️ Architecture
 
-This project follows the **MVVM (Model-View-ViewModel)** architecture pattern, ensuring separation of concerns and maintainability.
+This project follows the **MVVM (Model-View-ViewModel)** architecture pattern with **Navigation Components** and **Fragment-based UI**, ensuring separation of concerns and maintainability.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                         View Layer                           │
-│  (Activities, Fragments, Adapters, Layouts)                  │
-│  - Handles UI rendering and user interactions                │
-│  - Observes ViewModel LiveData                              │
-└──────────────────────┬───────────────────────────────────────┘
+│                         View Layer                          │
+│  (MainActivity, AdminMainActivity, Fragments, Adapters)     │
+│  - Bottom Navigation with Fragment transitions             │
+│  - Observes ViewModel LiveData                             │
+│  - Handles UI rendering and user interactions              │
+└──────────────────────┬──────────────────────────────────────┘
                        │
                        │ Observes
                        ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                      ViewModel Layer                        │
-│  (AuthViewModel, CampaignViewModel, ProfileViewModel)       │
-│  - Business logic and state management                      │
-│  - Exposes LiveData for UI observation                      │
-└──────────────────────┬───────────────────────────────────────┘
+│  (AuthViewModel, CampaignViewModel, ProfileViewModel)      │
+│  - Business logic and state management                     │
+│  - Exposes LiveData for UI observation                     │
+└──────────────────────┬──────────────────────────────────────┘
                        │
                        │ Uses
                        ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                      Repository Layer                       │
-│  (FirebaseHelper)                                            │
-│  - Centralized Firebase operations                          │
-│  - Handles authentication, Firestore, and Storage           │
-└──────────────────────┬───────────────────────────────────────┘
+│  (FirebaseHelper)                                           │
+│  - Centralized Firebase operations                         │
+│  - Handles authentication, Firestore, and Storage          │
+└──────────────────────┬──────────────────────────────────────┘
                        │
                        │ Communicates with
                        ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                      Firebase Backend                       │
-│  - Authentication, Firestore, Storage                       │
+│  - Authentication, Firestore, Storage                      │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ### Key Principles:
 - **Separation of Concerns**: UI, business logic, and data access are clearly separated
+- **Navigation Components**: Uses AndroidX Navigation for fragment transitions
 - **Reactive Programming**: Uses LiveData for reactive UI updates
 - **Single Source of Truth**: Firebase serves as the central data source
 - **Testability**: ViewModels can be tested independently of UI
@@ -108,12 +114,25 @@ This project follows the **MVVM (Model-View-ViewModel)** architecture pattern, e
 
 > **Note**: Add screenshots of your app here to showcase the UI
 
+### Authentication Screens
+- Splash Screen
 - Login Screen
-- User Dashboard
-- Admin Dashboard
+- Signup Screen
+- Forgot Password Screen
+
+### User Screens (Bottom Navigation)
+- Home Fragment - Browse donation campaigns
+- Donation History Fragment - View past donations
+- Profile Fragment - Manage profile
+
+### Admin Screens (Bottom Navigation)
+- Admin Home Fragment - Manage campaigns
+- Profile Fragment - Admin profile
+
+### Other Screens
 - Campaign Details
-- Donation Screen
-- Profile Screen
+- Donation Form
+- Add/Edit Campaign (Admin)
 
 ---
 
@@ -134,7 +153,7 @@ Before you begin, ensure you have the following installed:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/DonationApp.git
+git clone https://github.com/CoderMohib/DonationApp.git
 cd DonationApp
 ```
 
@@ -202,18 +221,27 @@ app/src/main/java/com/example/donationapp/
 │   ├── SplashActivity.java          # App entry point
 │   ├── LoginActivity.java           # User authentication
 │   ├── SignupActivity.java          # User registration
-│   ├── UserDashboardActivity.java  # User campaign list
-│   ├── AdminDashboardActivity.java # Admin campaign management
-│   ├── CampaignDetailActivity.java # Campaign details view
-│   ├── DonateActivity.java         # Donation form
+│   ├── ForgotPasswordActivity.java  # Password recovery
+│   ├── MainActivity.java            # User dashboard with bottom navigation
+│   ├── AdminMainActivity.java       # Admin dashboard with bottom navigation
+│   ├── CampaignDetailActivity.java  # Campaign details view
+│   ├── DonateActivity.java          # Donation form
 │   ├── AddCampaignActivity.java     # Create campaign (admin)
 │   ├── EditCampaignActivity.java    # Edit campaign (admin)
-│   └── ProfileActivity.java        # User profile management
+│   ├── ProfileActivity.java         # Full-screen profile management
+│   ├── AdminDashboardActivity.java  # Legacy admin activity
+│   └── UserDashboardActivity.java   # Legacy user activity
+│
+├── fragment/           # UI Fragments
+│   ├── HomeFragment.java            # User home with campaigns list
+│   ├── ProfileFragment.java         # User profile management
+│   ├── DonationHistoryFragment.java # User donation history
+│   └── AdminHomeFragment.java       # Admin campaign management
 │
 ├── viewmodel/          # ViewModels (MVVM)
 │   ├── AuthViewModel.java      # Authentication logic
-│   ├── CampaignViewModel.java # Campaign operations
-│   └── ProfileViewModel.java  # Profile management
+│   ├── CampaignViewModel.java  # Campaign operations
+│   └── ProfileViewModel.java   # Profile management
 │
 ├── adapter/            # RecyclerView adapters
 │   ├── CampaignAdapter.java   # Campaign list adapter
@@ -223,7 +251,8 @@ app/src/main/java/com/example/donationapp/
     ├── FirebaseHelper.java  # Firebase operations wrapper
     ├── Validator.java       # Input validation
     ├── ImageHelper.java     # Image processing
-    └── DialogHelper.java    # Dialog utilities
+    ├── DialogHelper.java    # Dialog utilities
+    └── WindowInsetsHelper.java  # Window insets handling
 ```
 
 ---
@@ -458,9 +487,10 @@ This project is for **educational purposes** only. Feel free to use it as a lear
 ## 📞 Support
 
 For issues, questions, or suggestions:
-- Open an issue on GitHub
+- **GitHub Issues**: [Create an issue](https://github.com/CoderMohib/DonationApp/issues)
 - Check existing issues for solutions
-- Review Firebase documentation for backend questions
+- Review [Firebase documentation](https://firebase.google.com/docs) for backend questions
+- Contact: CoderMohib
 
 ---
 

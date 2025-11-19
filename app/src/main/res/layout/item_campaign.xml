@@ -6,6 +6,7 @@
     android:layout_margin="@dimen/spacing_small"
     app:cardCornerRadius="@dimen/corner_radius_card"
     app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/card_background"
     app:strokeWidth="0dp">
 
     <LinearLayout
@@ -83,7 +84,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_medium"
             android:text="@string/donate_button"
-            style="@style/Widget.Material3.Button" />
+            app:backgroundTint="@color/button_primary"
+            app:cornerRadius="@dimen/button_corner_radius"
+            android:textColor="@color/on_button_primary" />
 
     </LinearLayout>
 

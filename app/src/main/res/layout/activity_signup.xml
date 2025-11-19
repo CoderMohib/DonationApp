@@ -230,25 +230,52 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Sign Up Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/signup_button"
+            <!-- Sign Up Button Container -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/signup_button_container"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/button_height"
                 android:layout_marginTop="@dimen/spacing_button_top"
-                app:backgroundTint="@color/button_primary"
-                app:backgroundTintMode="src_over"
-                android:text="@string/signup_button"
-                android:textColor="@color/text_on_primary"
-                android:textSize="@dimen/text_size_large"
-                android:textStyle="bold"
-                android:letterSpacing="0.01"
-                android:elevation="0dp"
-                android:stateListAnimator="@null"
-                app:cornerRadius="@dimen/button_corner_radius"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/confirm_password_layout" />
+                app:layout_constraintTop_toBottomOf="@id/confirm_password_layout">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/signup_button"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:backgroundTint="@color/button_primary"
+                    app:backgroundTintMode="src_over"
+                    android:text="@string/signup_button"
+                    android:textColor="@color/text_on_primary"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.01"
+                    android:elevation="0dp"
+                    android:stateListAnimator="@null"
+                    app:cornerRadius="@dimen/button_corner_radius"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/signup_progress_indicator"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:indeterminate="false"
+                    android:progress="0"
+                    android:max="100"
+                    android:visibility="gone"
+                    app:indicatorColor="@color/text_on_primary"
+                    app:trackColor="#33FFFFFF"
+                    app:trackThickness="3.5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Login Link Container -->
             <LinearLayout
@@ -259,7 +286,7 @@
                 android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/signup_button">
+                app:layout_constraintTop_toBottomOf="@id/signup_button_container">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -287,18 +314,6 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
-
-            <!-- Progress Bar -->
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_medium"
-                android:indeterminateTint="@color/primary"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/login_link_container" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

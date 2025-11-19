@@ -74,4 +74,11 @@
         <item name="cardCornerRadius">@dimen/corner_radius_card</item>
         <item name="cardElevation">@dimen/card_elevation</item>
     </style>
+
+    <!-- Bottom Navigation Active Indicator Style -->
+    <style name="BottomNavigationActiveIndicatorStyle" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/primary</item>
+        <item name="android:width">64dp</item>
+        <item name="android:height">32dp</item>
+    </style>
 </resources>

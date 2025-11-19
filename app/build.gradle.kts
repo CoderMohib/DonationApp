@@ -46,6 +46,10 @@ dependencies {
     implementation(libs.lifecycle.livedata)
     implementation(libs.lifecycle.runtime)
     
+    // Navigation Component
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
+    
     // Firebase BOM (Bill of Materials) for version management
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)

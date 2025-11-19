@@ -8,9 +8,12 @@
     android:gravity="center">
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/loading_progress_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
+        android:indeterminate="false"
+        android:progress="0"
+        android:max="100"
         app:indicatorColor="@color/primary" />
 
     <TextView

@@ -1,11 +1,11 @@
 package com.example.donationapp.view;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,7 +16,10 @@ import com.example.donationapp.R;
 import com.example.donationapp.model.User;
 import com.example.donationapp.util.DialogHelper;
 import com.example.donationapp.util.Validator;
+import com.example.donationapp.util.WindowInsetsHelper;
 import com.example.donationapp.viewmodel.AuthViewModel;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -28,19 +31,20 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputLayout passwordLayout;
     private TextInputEditText emailEditText;
     private TextInputEditText passwordEditText;
-    private Button loginButton;
+    private MaterialButton loginButton;
     private TextView signupButton;
-    private ProgressBar progressBar;
+    private CircularProgressIndicator loginProgressIndicator;
     private AuthViewModel authViewModel;
+    private ObjectAnimator progressAnimator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Handle system window insets for notch/punch hole
-        // The layout uses fitsSystemWindows="true" which automatically handles insets
-        // This ensures content doesn't overlap with system UI elements
+        // Apply window insets for notch/punch hole camera
+        View rootView = findViewById(android.R.id.content);
+        WindowInsetsHelper.applyWindowInsets(rootView);
 
         // Initialize views
         emailLayout = findViewById(R.id.email_layout);
@@ -49,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.password_edit_text);
         loginButton = findViewById(R.id.login_button);
         signupButton = findViewById(R.id.signup_button);
-        progressBar = findViewById(R.id.progress_bar);
+        loginProgressIndicator = findViewById(R.id.login_progress_indicator);
 
         // Initialize ViewModel
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
@@ -63,6 +67,15 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
             startActivity(intent);
         });
+        
+        // Forgot Password listener
+        TextView forgotPasswordText = findViewById(R.id.forgot_password_link);
+        if (forgotPasswordText != null) {
+            forgotPasswordText.setOnClickListener(v -> {
+                Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                startActivity(intent);
+            });
+        }
 
         // Real-time validation
         emailEditText.setOnFocusChangeListener((v, hasFocus) -> {
@@ -81,8 +94,30 @@ public class LoginActivity extends AppCompatActivity {
     private void observeViewModel() {
         authViewModel.getIsLoading().observe(this, isLoading -> {
             if (isLoading != null) {
-                progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-                loginButton.setEnabled(!isLoading);
+                if (isLoading) {
+                    // Show loading indicator and hide button text
+                    loginProgressIndicator.setVisibility(View.VISIBLE);
+                    loginProgressIndicator.setProgress(0);
+                    loginButton.setText("");
+                    loginButton.setEnabled(false);
+                    
+                    // Animate progress from 0 to 100
+                    if (progressAnimator != null) {
+                        progressAnimator.cancel();
+                    }
+                    progressAnimator = ObjectAnimator.ofInt(loginProgressIndicator, "progress", 0, 100);
+                    progressAnimator.setDuration(2500); // 2.5 seconds
+                    progressAnimator.start();
+                } else {
+                    // Hide loading indicator and show button text
+                    if (progressAnimator != null) {
+                        progressAnimator.cancel();
+                    }
+                    loginProgressIndicator.setProgress(0);
+                    loginProgressIndicator.setVisibility(View.GONE);
+                    loginButton.setText(R.string.login_button);
+                    loginButton.setEnabled(true);
+                }
             }
         });
 
@@ -152,9 +187,9 @@ public class LoginActivity extends AppCompatActivity {
     private void redirectToDashboard(User user) {
         Intent intent;
         if (user.isAdmin()) {
-            intent = new Intent(LoginActivity.this, AdminDashboardActivity.class);
+            intent = new Intent(LoginActivity.this, AdminMainActivity.class);
         } else {
-            intent = new Intent(LoginActivity.this, UserDashboardActivity.class);
+            intent = new Intent(LoginActivity.this, MainActivity.class);
         }
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
