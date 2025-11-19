@@ -32,7 +32,6 @@
                 android:layout_marginEnd="@dimen/spacing_card_horizontal"
                 app:cardBackgroundColor="@color/card_background"
                 app:cardCornerRadius="@dimen/corner_radius_card"
-                app:cardElevation="@dimen/card_elevation"
                 app:strokeWidth="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -75,6 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_title_bottom"
+                android:layout_marginBottom="@dimen/spacing_title_bottom"
                 android:text="@string/create_account_subtitle"
                 android:textColor="@color/text_secondary"
                 android:textSize="@dimen/text_size_subtitle"
@@ -236,7 +236,8 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/button_height"
                 android:layout_marginTop="@dimen/spacing_button_top"
-                android:background="@drawable/bg_button_primary"
+                app:backgroundTint="@color/button_primary"
+                app:backgroundTintMode="src_over"
                 android:text="@string/signup_button"
                 android:textColor="@color/text_on_primary"
                 android:textSize="@dimen/text_size_large"
@@ -254,7 +255,6 @@
                 android:id="@+id/login_link_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_link_top"
                 android:orientation="horizontal"
                 android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -272,7 +272,7 @@
                     android:id="@+id/login_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_small"
+
                     android:minHeight="48dp"
                     android:gravity="center_vertical"
                     android:clickable="true"
