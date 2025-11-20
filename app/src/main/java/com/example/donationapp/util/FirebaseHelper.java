@@ -557,6 +557,10 @@ public class FirebaseHelper {
             return "Network error. Please check your internet connection";
         } else if (lowerMessage.contains("permission") || 
                    lowerMessage.contains("permission-denied")) {
+            // Check if it's related to campaign update (donation issue)
+            if (lowerMessage.contains("campaign") || lowerMessage.contains("update")) {
+                return "Permission denied. Firestore security rules need to allow updating campaign collectedAmount. Please update your Firestore security rules to allow authenticated users to update the collectedAmount field of campaigns.";
+            }
             return "Permission denied. You don't have access to this resource";
         } else if (lowerMessage.contains("not found") || 
                    lowerMessage.contains("not-found")) {

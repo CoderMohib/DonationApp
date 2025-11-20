@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_large"
+    android:background="@color/surface">
+
+    <TextView
+        android:id="@+id/campaign_title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_large"
+        android:textStyle="bold"
+        android:textColor="@color/on_surface"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:layout_marginBottom="@dimen/spacing_medium" />
+
+    <!-- Amount Input - Using same style as login/signup -->
+    <include
+        android:id="@+id/amount_layout"
+        layout="@layout/layout_text_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Donate Button with Progress - Using same style as login/signup -->
+    <include
+        android:id="@+id/donate_button_container"
+        layout="@layout/layout_button_with_progress"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="@dimen/spacing_large" />
+
+</LinearLayout>
+

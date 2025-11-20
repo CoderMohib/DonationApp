@@ -22,6 +22,7 @@ import com.example.donationapp.R;
 import com.example.donationapp.adapter.CampaignAdapter;
 import com.example.donationapp.model.Campaign;
 import com.example.donationapp.util.DialogHelper;
+import com.example.donationapp.util.FirebaseHelper;
 import com.example.donationapp.util.WindowInsetsHelper;
 import com.example.donationapp.view.CampaignDetailActivity;
 import com.example.donationapp.viewmodel.CampaignViewModel;
@@ -81,15 +82,22 @@ public class HomeFragment extends Fragment {
             }
 
             // Setup RecyclerView
-            campaignAdapter = new CampaignAdapter(campaign -> {
-                // Handle campaign click - navigate to detail
-                android.content.Context ctx = getContext();
-                if (ctx != null) {
-                    Intent intent = new Intent(ctx, CampaignDetailActivity.class);
-                    intent.putExtra("campaign_id", campaign.getId());
-                    startActivity(intent);
+            campaignAdapter = new CampaignAdapter(
+                campaign -> {
+                    // Handle campaign click - navigate to detail
+                    android.content.Context ctx = getContext();
+                    if (ctx != null) {
+                        Intent intent = new Intent(ctx, CampaignDetailActivity.class);
+                        intent.putExtra("campaign_id", campaign.getId());
+                        startActivity(intent);
+                    }
+                },
+                null, // No long-press for users
+                campaign -> {
+                    // Handle donate button click - show bottom sheet
+                    showDonationBottomSheet(campaign);
                 }
-            }, null); // No long-press for users
+            );
 
             campaignsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
             campaignsRecyclerView.setAdapter(campaignAdapter);
@@ -209,6 +217,26 @@ public class HomeFragment extends Fragment {
                 campaignsRecyclerView.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    private void showDonationBottomSheet(Campaign campaign) {
+        // Check authentication before showing bottom sheet
+        if (FirebaseHelper.getInstance().getCurrentUser() == null) {
+            android.content.Context context = getContext();
+            if (context != null) {
+                DialogHelper.showErrorDialog(context, "Authentication Required", 
+                        "You are not authorized. Please log in to make a donation.");
+            }
+            return;
+        }
+
+        // Show bottom sheet dialog
+        com.example.donationapp.fragment.DonationBottomSheetFragment bottomSheet = 
+                com.example.donationapp.fragment.DonationBottomSheetFragment.newInstance(
+                        campaign.getId(), 
+                        campaign.getTitle()
+                );
+        bottomSheet.show(getParentFragmentManager(), "DonationBottomSheet");
     }
 
     @Override

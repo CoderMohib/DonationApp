@@ -72,11 +72,11 @@ public class AdminDashboardActivity extends AppCompatActivity {
         campaignsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         campaignsRecyclerView.setAdapter(campaignAdapter);
 
-        // Initialize ViewModel
+        // Initialize ViewModels
         campaignViewModel = new ViewModelProvider(this).get(CampaignViewModel.class);
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
-        // Observe ViewModel
+        // Observe ViewModels
         observeViewModel();
 
         // Setup SwipeRefreshLayout

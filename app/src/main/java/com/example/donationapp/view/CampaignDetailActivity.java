@@ -1,6 +1,5 @@
 package com.example.donationapp.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,8 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.donationapp.R;
+import com.example.donationapp.fragment.DonationBottomSheetFragment;
 import com.example.donationapp.model.Campaign;
 import com.example.donationapp.util.DialogHelper;
+import com.example.donationapp.util.FirebaseHelper;
 import com.example.donationapp.viewmodel.CampaignViewModel;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.squareup.picasso.Picasso;
@@ -26,6 +27,7 @@ import java.util.Locale;
  */
 public class CampaignDetailActivity extends AppCompatActivity {
     private String campaignId;
+    private Campaign currentCampaign;
     
     private ImageView campaignImage;
     private TextView titleText;
@@ -65,12 +67,8 @@ public class CampaignDetailActivity extends AppCompatActivity {
         // Initialize ViewModel
         campaignViewModel = new ViewModelProvider(this).get(CampaignViewModel.class);
 
-        // Set click listener
-        donateButton.setOnClickListener(v -> {
-            Intent intent = new Intent(CampaignDetailActivity.this, DonateActivity.class);
-            intent.putExtra("campaign_id", campaignId);
-            startActivity(intent);
-        });
+        // Set click listener - show bottom sheet instead of navigating
+        donateButton.setOnClickListener(v -> showDonationBottomSheet());
 
         // Observe ViewModel
         observeViewModel();
@@ -100,6 +98,7 @@ public class CampaignDetailActivity extends AppCompatActivity {
     }
 
     private void displayCampaign(Campaign campaign) {
+        this.currentCampaign = campaign;
         titleText.setText(campaign.getTitle());
         descriptionText.setText(campaign.getDescription());
         goalAmountText.setText("Goal: " + currencyFormat.format(campaign.getGoalAmount()));
@@ -113,6 +112,21 @@ public class CampaignDetailActivity extends AppCompatActivity {
         if (campaign.getImageUrl() != null && !campaign.getImageUrl().isEmpty()) {
             Picasso.get().load(campaign.getImageUrl()).into(campaignImage);
         }
+    }
+
+    private void showDonationBottomSheet() {
+        // Check authentication before showing bottom sheet
+        if (FirebaseHelper.getInstance().getCurrentUser() == null) {
+            DialogHelper.showErrorDialog(this, "Authentication Required", 
+                    "You are not authorized. Please log in to make a donation.");
+            return;
+        }
+
+        // Show bottom sheet dialog
+        String campaignTitle = currentCampaign != null ? currentCampaign.getTitle() : null;
+        DonationBottomSheetFragment bottomSheet = 
+                DonationBottomSheetFragment.newInstance(campaignId, campaignTitle);
+        bottomSheet.show(getSupportFragmentManager(), "DonationBottomSheet");
     }
 }
 

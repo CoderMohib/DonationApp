@@ -26,6 +26,7 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
     private List<Campaign> campaigns;
     private OnCampaignClickListener clickListener;
     private OnCampaignLongClickListener longClickListener;
+    private OnDonateClickListener donateClickListener;
     private NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
 
     public CampaignAdapter(OnCampaignClickListener clickListener, 
@@ -33,6 +34,16 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
         this.campaigns = new ArrayList<>();
         this.clickListener = clickListener;
         this.longClickListener = longClickListener;
+        this.donateClickListener = null;
+    }
+
+    public CampaignAdapter(OnCampaignClickListener clickListener, 
+                          OnCampaignLongClickListener longClickListener,
+                          OnDonateClickListener donateClickListener) {
+        this.campaigns = new ArrayList<>();
+        this.clickListener = clickListener;
+        this.longClickListener = longClickListener;
+        this.donateClickListener = donateClickListener;
     }
 
     public interface OnCampaignClickListener {
@@ -41,6 +52,10 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
 
     public interface OnCampaignLongClickListener {
         void onCampaignLongClick(Campaign campaign);
+    }
+
+    public interface OnDonateClickListener {
+        void onDonateClick(Campaign campaign);
     }
 
     @NonNull
@@ -104,11 +119,18 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
                 return false;
             });
 
-            // Donate button click
+            // Donate button click - show bottom sheet instead of navigating
             donateButton.setOnClickListener(v -> {
                 int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION && clickListener != null) {
-                    clickListener.onCampaignClick(campaigns.get(position));
+                if (position != RecyclerView.NO_POSITION) {
+                    Campaign campaign = campaigns.get(position);
+                    // Use donation click listener if available, otherwise fall back to campaign click
+                    if (donateClickListener != null) {
+                        donateClickListener.onDonateClick(campaign);
+                    } else if (clickListener != null) {
+                        // Fallback: navigate to detail (for backward compatibility)
+                        clickListener.onCampaignClick(campaign);
+                    }
                 }
             });
         }

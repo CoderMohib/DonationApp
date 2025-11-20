@@ -338,13 +338,21 @@ service cloud.firestore {
       // Anyone authenticated can read campaigns
       allow read: if request.auth != null;
       
-      // Only admins can create, update, or delete campaigns
+      // Only admins can create or delete campaigns
       allow create: if request.auth != null && 
-                    get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
-      allow update: if request.auth != null && 
                     get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
       allow delete: if request.auth != null && 
                     get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      
+      // Admins can update any field, authenticated users can only update collectedAmount
+      allow update: if request.auth != null && (
+                    // Admin can update anything
+                    get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+                    // Regular users can only update collectedAmount field (for donations)
+                    (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['collectedAmount']) &&
+                     request.resource.data.collectedAmount is number &&
+                     request.resource.data.collectedAmount >= (resource.data.collectedAmount == null ? 0.0 : resource.data.collectedAmount))
+                   );
     }
     
     // Donations collection
