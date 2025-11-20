@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/form_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_card_horizontal"
+        android:layout_marginEnd="@dimen/spacing_card_horizontal"
+        app:cardBackgroundColor="@color/card_background"
+        app:cardCornerRadius="@dimen/corner_radius_card"
+        app:strokeWidth="0dp"
+        tools:layout_marginStart="24dp"
+        tools:layout_marginEnd="24dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/card_padding_horizontal"
+            android:paddingTop="@dimen/card_padding_vertical"
+            android:paddingEnd="@dimen/card_padding_horizontal"
+            android:paddingBottom="@dimen/spacing_bottom_padding">
+
+            <!-- Content will be inserted here via include -->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</merge>
+

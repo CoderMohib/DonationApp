@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_medium"
             android:text="@string/donate_button"
-            app:backgroundTint="@color/button_primary"
+            app:backgroundTint="@color/primary"
             app:cornerRadius="@dimen/button_corner_radius"
             android:textColor="@color/on_button_primary" />
 

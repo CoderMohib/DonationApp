@@ -25,7 +25,7 @@ public class ProfileViewModel extends AndroidViewModel {
     private MutableLiveData<User> userProfile = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private MutableLiveData<String> errorMessage = new MutableLiveData<>();
-    private MutableLiveData<Boolean> updateSuccess = new MutableLiveData<>();
+    private MutableLiveData<Boolean> updateSuccess = new MutableLiveData<>(false);
 
     public ProfileViewModel(@NonNull Application application) {
         super(application);
@@ -163,6 +163,13 @@ public class ProfileViewModel extends AndroidViewModel {
 
     public LiveData<Boolean> getUpdateSuccess() {
         return updateSuccess;
+    }
+
+    /**
+     * Reset update success flag
+     */
+    public void resetUpdateSuccess() {
+        updateSuccess.setValue(false);
     }
 }
 

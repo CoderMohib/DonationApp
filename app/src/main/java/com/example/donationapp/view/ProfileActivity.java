@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.Map;
 
 /**
  * Profile Activity - Displays and allows editing of user profile
@@ -49,6 +50,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Uri imageUri;
     private byte[] imageBytes;
     private boolean imageChanged = false;
+    private boolean isInitialLoad = true;
 
     private ActivityResultLauncher<Intent> imagePickerLauncher;
     private ActivityResultLauncher<Uri> cameraLauncher;
@@ -60,13 +62,25 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Initialize views
         profileImage = findViewById(R.id.profile_image);
+        // Set default user icon initially
+        profileImage.setImageResource(R.drawable.ic_profile);
         emailText = findViewById(R.id.email_text);
         nameLayout = findViewById(R.id.name_layout);
         phoneLayout = findViewById(R.id.phone_layout);
-        nameEditText = findViewById(R.id.name_edit_text);
-        phoneEditText = findViewById(R.id.phone_edit_text);
+        // Find child views within included layouts
+        nameEditText = nameLayout.findViewById(R.id.text_input_edit_text);
+        phoneEditText = phoneLayout.findViewById(R.id.text_input_edit_text);
+        // Configure input fields
+        nameLayout.setHint(getString(R.string.name_label));
+        nameEditText.setInputType(android.text.InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+        phoneLayout.setHint(getString(R.string.phone_label));
+        phoneEditText.setInputType(android.text.InputType.TYPE_CLASS_PHONE);
+        
         editImageButton = findViewById(R.id.edit_image_button);
-        saveButton = findViewById(R.id.save_button);
+        // Find button within included layout
+        View buttonView = findViewById(R.id.save_button);
+        saveButton = buttonView.findViewById(R.id.primary_button);
+        saveButton.setText(getString(R.string.save_button));
         progressBar = findViewById(R.id.progress_bar);
 
         // Initialize ViewModels
@@ -106,6 +120,8 @@ public class ProfileActivity extends AppCompatActivity {
         if (currentUser != null) {
             emailText.setText(currentUser.getEmail());
             profileViewModel.loadUserProfile(currentUser.getUid());
+            // Mark that initial load is complete after a short delay
+            findViewById(android.R.id.content).postDelayed(() -> isInitialLoad = false, 500);
         }
     }
 
@@ -130,8 +146,14 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         profileViewModel.getUpdateSuccess().observe(this, success -> {
-            if (success != null && success) {
+            if (success != null && success && !isInitialLoad) {
                 DialogHelper.showSuccessDialog(this, "Success", "Profile updated successfully!", null);
+                // Reset the success flag after showing dialog
+                profileViewModel.resetUpdateSuccess();
+            } else if (success != null && success && isInitialLoad) {
+                // Reset on initial load without showing dialog
+                profileViewModel.resetUpdateSuccess();
+                isInitialLoad = false;
             }
         });
     }
@@ -140,9 +162,15 @@ public class ProfileActivity extends AppCompatActivity {
         nameEditText.setText(user.getName());
         phoneEditText.setText(user.getPhone());
 
-        // Load profile image
+        // Load profile image or show default icon
         if (user.getProfileImage() != null && !user.getProfileImage().isEmpty()) {
-            Picasso.get().load(user.getProfileImage()).into(profileImage);
+            Picasso.get().load(user.getProfileImage())
+                    .placeholder(R.drawable.ic_profile)
+                    .error(R.drawable.ic_profile)
+                    .into(profileImage);
+        } else {
+            // Show default user icon when no profile image
+            profileImage.setImageResource(R.drawable.ic_profile);
         }
     }
 
@@ -247,16 +275,18 @@ public class ProfileActivity extends AppCompatActivity {
         //     }
         // }
 
-        // Temporary fallback: Update profile without image upload (works without Storage)
-        // If image was changed, set profileImage to empty (image won't be uploaded)
+        // Update all fields at once using a single call to avoid multiple success dialogs
+        Map<String, Object> updates = new java.util.HashMap<String, Object>();
+        updates.put("name", name);
+        updates.put("phone", phone != null && !phone.isEmpty() ? phone : "");
+        
+        // If image was changed, set profileImage to empty (image won't be uploaded without Storage)
         if (imageChanged && imageBytes != null) {
-            profileViewModel.updateProfileImage(currentUser.getUid(), ""); // Empty imageUrl when Storage is disabled
+            updates.put("profileImage", ""); // Empty imageUrl when Storage is disabled
         }
-        // Update name and phone
-        profileViewModel.updateUserName(currentUser.getUid(), name);
-        if (!phone.isEmpty()) {
-            profileViewModel.updateUserPhone(currentUser.getUid(), phone);
-        }
+        
+        // Single update call for all fields
+        profileViewModel.updateUserProfile(currentUser.getUid(), updates);
     }
 }
 

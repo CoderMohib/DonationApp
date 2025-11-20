@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/text_input_layout"
+    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:hint="@string/email_label"
+    app:boxCornerRadiusBottomEnd="@dimen/input_corner_radius"
+    app:boxCornerRadiusBottomStart="@dimen/input_corner_radius"
+    app:boxCornerRadiusTopEnd="@dimen/input_corner_radius"
+    app:boxCornerRadiusTopStart="@dimen/input_corner_radius"
+    app:boxStrokeColor="@color/input_outline"
+    app:boxStrokeWidth="@dimen/input_stroke_width"
+    app:boxStrokeWidthFocused="@dimen/input_stroke_width_focused"
+    app:errorTextColor="@color/input_error"
+    app:hintTextColor="@color/hint_text_color"
+    tools:hint="@string/email_label">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/text_input_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="email"
+        android:inputType="textEmailAddress"
+        android:minHeight="@dimen/input_height"
+        android:paddingStart="@dimen/input_padding_horizontal"
+        android:paddingEnd="@dimen/input_padding_horizontal"
+        android:textColor="@color/input_text"
+        android:textColorHint="@color/input_hint"
+        android:textSize="@dimen/text_size_body"
+        tools:inputType="textEmailAddress" />
+
+</com.google.android.material.textfield.TextInputLayout>
+

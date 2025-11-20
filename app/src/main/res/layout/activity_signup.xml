@@ -84,198 +84,59 @@
                 app:layout_constraintTop_toBottomOf="@id/create_account_title" />
 
             <!-- Name Input -->
-            <com.google.android.material.textfield.TextInputLayout
+            <include
                 android:id="@+id/name_layout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                layout="@layout/layout_text_input"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_subtitle_bottom"
-                android:hint="@string/name_label"
-                app:boxCornerRadiusBottomEnd="@dimen/input_corner_radius"
-                app:boxCornerRadiusBottomStart="@dimen/input_corner_radius"
-                app:boxCornerRadiusTopEnd="@dimen/input_corner_radius"
-                app:boxCornerRadiusTopStart="@dimen/input_corner_radius"
-                app:boxStrokeColor="@color/input_outline"
-                app:boxStrokeWidth="@dimen/input_stroke_width"
-                app:boxStrokeWidthFocused="@dimen/input_stroke_width_focused"
-                app:hintTextColor="@color/input_hint"
-                app:errorTextColor="@color/input_error"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/create_account_subtitle">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/name_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="@dimen/input_height"
-                    android:inputType="textPersonName"
-                    android:autofillHints="name"
-                    android:textColor="@color/input_text"
-                    android:textColorHint="@color/input_hint"
-                    android:textSize="@dimen/text_size_body"
-                    android:paddingStart="@dimen/input_padding_horizontal"
-                    android:paddingEnd="@dimen/input_padding_horizontal" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintTop_toBottomOf="@id/create_account_subtitle" />
 
             <!-- Email Input -->
-            <com.google.android.material.textfield.TextInputLayout
+            <include
                 android:id="@+id/email_layout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                layout="@layout/layout_text_input"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_input_between"
-                android:hint="@string/email_label"
-                app:boxCornerRadiusBottomEnd="@dimen/input_corner_radius"
-                app:boxCornerRadiusBottomStart="@dimen/input_corner_radius"
-                app:boxCornerRadiusTopEnd="@dimen/input_corner_radius"
-                app:boxCornerRadiusTopStart="@dimen/input_corner_radius"
-                app:boxStrokeColor="@color/input_outline"
-                app:boxStrokeWidth="@dimen/input_stroke_width"
-                app:boxStrokeWidthFocused="@dimen/input_stroke_width_focused"
-                app:hintTextColor="@color/input_hint"
-                app:errorTextColor="@color/input_error"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/name_layout">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/email_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="@dimen/input_height"
-                    android:inputType="textEmailAddress"
-                    android:autofillHints="email"
-                    android:textColor="@color/input_text"
-                    android:textColorHint="@color/input_hint"
-                    android:textSize="@dimen/text_size_body"
-                    android:paddingStart="@dimen/input_padding_horizontal"
-                    android:paddingEnd="@dimen/input_padding_horizontal" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintTop_toBottomOf="@id/name_layout" />
 
             <!-- Password Input -->
-            <com.google.android.material.textfield.TextInputLayout
+            <include
                 android:id="@+id/password_layout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                layout="@layout/layout_text_input"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_input_between"
-                android:hint="@string/password_label"
-                app:boxCornerRadiusBottomEnd="@dimen/input_corner_radius"
-                app:boxCornerRadiusBottomStart="@dimen/input_corner_radius"
-                app:boxCornerRadiusTopEnd="@dimen/input_corner_radius"
-                app:boxCornerRadiusTopStart="@dimen/input_corner_radius"
-                app:boxStrokeColor="@color/input_outline"
-                app:boxStrokeWidth="@dimen/input_stroke_width"
-                app:boxStrokeWidthFocused="@dimen/input_stroke_width_focused"
-                app:endIconMode="password_toggle"
-                app:endIconTint="@color/input_hint"
-                app:hintTextColor="@color/input_hint"
-                app:errorTextColor="@color/input_error"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/email_layout">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/password_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="@dimen/input_height"
-                    android:inputType="textPassword"
-                    android:autofillHints="password"
-                    android:textColor="@color/input_text"
-                    android:textColorHint="@color/input_hint"
-                    android:textSize="@dimen/text_size_body"
-                    android:paddingStart="@dimen/input_padding_horizontal"
-                    android:paddingEnd="@dimen/input_padding_horizontal" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintTop_toBottomOf="@id/email_layout" />
 
             <!-- Confirm Password Input -->
-            <com.google.android.material.textfield.TextInputLayout
+            <include
                 android:id="@+id/confirm_password_layout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                layout="@layout/layout_text_input"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_input_between"
-                android:hint="@string/confirm_password_label"
-                app:boxCornerRadiusBottomEnd="@dimen/input_corner_radius"
-                app:boxCornerRadiusBottomStart="@dimen/input_corner_radius"
-                app:boxCornerRadiusTopEnd="@dimen/input_corner_radius"
-                app:boxCornerRadiusTopStart="@dimen/input_corner_radius"
-                app:boxStrokeColor="@color/input_outline"
-                app:boxStrokeWidth="@dimen/input_stroke_width"
-                app:boxStrokeWidthFocused="@dimen/input_stroke_width_focused"
-                app:endIconMode="password_toggle"
-                app:endIconTint="@color/input_hint"
-                app:hintTextColor="@color/input_hint"
-                app:errorTextColor="@color/input_error"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/password_layout">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/confirm_password_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="@dimen/input_height"
-                    android:inputType="textPassword"
-                    android:textColor="@color/input_text"
-                    android:textColorHint="@color/input_hint"
-                    android:textSize="@dimen/text_size_body"
-                    android:paddingStart="@dimen/input_padding_horizontal"
-                    android:paddingEnd="@dimen/input_padding_horizontal" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintTop_toBottomOf="@id/password_layout" />
 
             <!-- Sign Up Button Container -->
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <include
                 android:id="@+id/signup_button_container"
+                layout="@layout/layout_button_with_progress"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/button_height"
                 android:layout_marginTop="@dimen/spacing_button_top"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/confirm_password_layout">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/signup_button"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:backgroundTint="@color/button_primary"
-                    app:backgroundTintMode="src_over"
-                    android:text="@string/signup_button"
-                    android:textColor="@color/text_on_primary"
-                    android:textSize="@dimen/text_size_large"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.01"
-                    android:elevation="0dp"
-                    android:stateListAnimator="@null"
-                    app:cornerRadius="@dimen/button_corner_radius"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
-
-                <com.google.android.material.progressindicator.CircularProgressIndicator
-                    android:id="@+id/signup_progress_indicator"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:indeterminate="false"
-                    android:progress="0"
-                    android:max="100"
-                    android:visibility="gone"
-                    app:indicatorColor="@color/text_on_primary"
-                    app:trackColor="#33FFFFFF"
-                    app:trackThickness="3.5dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintTop_toBottomOf="@id/confirm_password_layout" />
 
             <!-- Login Link Container -->
             <LinearLayout

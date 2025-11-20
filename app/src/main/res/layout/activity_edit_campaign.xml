@@ -44,74 +44,43 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <include
             android:id="@+id/title_layout"
+            layout="@layout/layout_text_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_medium"
-            android:hint="@string/title_label"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             app:layout_constraintTop_toBottomOf="@id/select_image_button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/title_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
+        <include
             android:id="@+id/description_layout"
+            layout="@layout/layout_text_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_medium"
-            android:hint="@string/description_label"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             app:layout_constraintTop_toBottomOf="@id/title_layout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/description_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:minLines="4"
-                android:gravity="top" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
+        <include
             android:id="@+id/goal_amount_layout"
+            layout="@layout/layout_text_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_medium"
-            android:hint="@string/goal_amount_label"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            app:prefixText="$"
             app:layout_constraintTop_toBottomOf="@id/description_layout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/goal_amount_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
+        <include
             android:id="@+id/save_button"
+            layout="@layout/layout_button_primary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_large"
             android:layout_marginBottom="@dimen/spacing_large"
-            android:text="@string/save_button"
-            style="@style/Widget.Material3.Button"
             app:layout_constraintTop_toBottomOf="@id/goal_amount_layout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

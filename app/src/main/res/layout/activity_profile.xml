@@ -58,52 +58,33 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <include
             android:id="@+id/name_layout"
+            layout="@layout/layout_text_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_medium"
-            android:hint="@string/name_label"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             app:layout_constraintTop_toBottomOf="@id/email_text"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/name_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
+        <include
             android:id="@+id/phone_layout"
+            layout="@layout/layout_text_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_medium"
-            android:hint="@string/phone_label"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             app:layout_constraintTop_toBottomOf="@id/name_layout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/phone_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="phone" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
+        <include
             android:id="@+id/save_button"
+            layout="@layout/layout_button_primary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_large"
             android:layout_marginBottom="@dimen/spacing_large"
-            android:text="@string/save_button"
-            style="@style/Widget.Material3.Button"
             app:layout_constraintTop_toBottomOf="@id/phone_layout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

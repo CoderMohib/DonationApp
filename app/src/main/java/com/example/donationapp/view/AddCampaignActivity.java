@@ -62,11 +62,26 @@ public class AddCampaignActivity extends AppCompatActivity {
         titleLayout = findViewById(R.id.title_layout);
         descriptionLayout = findViewById(R.id.description_layout);
         goalAmountLayout = findViewById(R.id.goal_amount_layout);
-        titleEditText = findViewById(R.id.title_edit_text);
-        descriptionEditText = findViewById(R.id.description_edit_text);
-        goalAmountEditText = findViewById(R.id.goal_amount_edit_text);
+        // Find child views within included layouts
+        titleEditText = titleLayout.findViewById(R.id.text_input_edit_text);
+        descriptionEditText = descriptionLayout.findViewById(R.id.text_input_edit_text);
+        goalAmountEditText = goalAmountLayout.findViewById(R.id.text_input_edit_text);
+        // Configure input fields
+        titleLayout.setHint(getString(R.string.title_label));
+        titleEditText.setInputType(android.text.InputType.TYPE_CLASS_TEXT);
+        descriptionLayout.setHint(getString(R.string.description_label));
+        descriptionEditText.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        descriptionEditText.setMinLines(4);
+        descriptionEditText.setGravity(android.view.Gravity.TOP);
+        goalAmountLayout.setHint(getString(R.string.goal_amount_label));
+        goalAmountLayout.setPrefixText("$");
+        goalAmountEditText.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        
         selectImageButton = findViewById(R.id.select_image_button);
-        saveButton = findViewById(R.id.save_button);
+        // Find button within included layout
+        View buttonView = findViewById(R.id.save_button);
+        saveButton = buttonView.findViewById(R.id.primary_button);
+        saveButton.setText(getString(R.string.save_button));
         progressBar = findViewById(R.id.progress_bar);
 
         // Initialize ViewModel

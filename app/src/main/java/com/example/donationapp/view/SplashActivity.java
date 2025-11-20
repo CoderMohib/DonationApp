@@ -25,6 +25,7 @@ public class SplashActivity extends AppCompatActivity {
     private AuthViewModel authViewModel;
     private CircularProgressIndicator progressBar;
     private ObjectAnimator progressAnimator;
+    private boolean hasRedirected = false; // Flag to prevent multiple redirects
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,44 +46,62 @@ public class SplashActivity extends AppCompatActivity {
 
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
-        // Observe authentication state
-        authViewModel.getIsAuthenticated().observe(this, isAuthenticated -> {
-            if (isAuthenticated != null && isAuthenticated) {
-                // User is authenticated, check role and redirect
-                checkUserRoleAndRedirect();
-            } else {
-                // User not authenticated, go to login
-                redirectToLogin();
-            }
-        });
-
-        // Check auth state
+        // Check auth state first
         FirebaseUser currentUser = FirebaseHelper.getInstance().getCurrentUser();
         if (currentUser == null) {
             redirectToLogin();
         } else {
+            // User is authenticated, observe for user data to load
+            authViewModel.getCurrentUser().observe(this, user -> {
+                if (user != null && !hasRedirected) {
+                    redirectBasedOnRole(user);
+                }
+            });
+            
+            // Also observe authentication state as backup
+            authViewModel.getIsAuthenticated().observe(this, isAuthenticated -> {
+                if (isAuthenticated != null && !isAuthenticated && !hasRedirected) {
+                    redirectToLogin();
+                }
+            });
+            
             // Wait a bit for user data to load, then check role
-            new Handler(Looper.getMainLooper()).postDelayed(this::checkUserRoleAndRedirect, SPLASH_DELAY);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                if (!hasRedirected) {
+                    checkUserRoleAndRedirect();
+                }
+            }, SPLASH_DELAY);
         }
     }
 
     private void checkUserRoleAndRedirect() {
+        if (hasRedirected) {
+            return; // Already redirected, don't do it again
+        }
+        
         User currentUser = authViewModel.getCurrentUser().getValue();
         if (currentUser != null) {
             redirectBasedOnRole(currentUser);
         } else {
-            // User data not loaded yet, observe for changes
-            authViewModel.getCurrentUser().observe(this, user -> {
-                if (user != null) {
-                    redirectBasedOnRole(user);
-                } else {
-                    redirectToLogin();
+            // User data not loaded yet, wait a bit more or redirect to login
+            // The observer will handle it when data loads
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                if (!hasRedirected) {
+                    User user = authViewModel.getCurrentUser().getValue();
+                    if (user != null) {
+                        redirectBasedOnRole(user);
+                    } else {
+                        redirectToLogin();
+                    }
                 }
-            });
+            }, 1000);
         }
     }
 
     private void redirectBasedOnRole(User user) {
+        if (hasRedirected) {
+            return; // Already redirected
+        }
         if (user.isAdmin()) {
             redirectToAdminDashboard();
         } else {
@@ -91,19 +110,34 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void redirectToLogin() {
+        if (hasRedirected) {
+            return; // Already redirected
+        }
+        hasRedirected = true;
         Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
 
     private void redirectToUserDashboard() {
+        if (hasRedirected) {
+            return; // Already redirected
+        }
+        hasRedirected = true;
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
 
     private void redirectToAdminDashboard() {
+        if (hasRedirected) {
+            return; // Already redirected
+        }
+        hasRedirected = true;
         Intent intent = new Intent(SplashActivity.this, AdminMainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }

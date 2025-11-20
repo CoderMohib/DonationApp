@@ -55,13 +55,42 @@ public class SignupActivity extends AppCompatActivity {
         emailLayout = findViewById(R.id.email_layout);
         passwordLayout = findViewById(R.id.password_layout);
         confirmPasswordLayout = findViewById(R.id.confirm_password_layout);
-        nameEditText = findViewById(R.id.name_edit_text);
-        emailEditText = findViewById(R.id.email_edit_text);
-        passwordEditText = findViewById(R.id.password_edit_text);
-        confirmPasswordEditText = findViewById(R.id.confirm_password_edit_text);
-        signupButton = findViewById(R.id.signup_button);
+        // Find child views within included layouts
+        nameEditText = nameLayout.findViewById(R.id.text_input_edit_text);
+        emailEditText = emailLayout.findViewById(R.id.text_input_edit_text);
+        passwordEditText = passwordLayout.findViewById(R.id.text_input_edit_text);
+        confirmPasswordEditText = confirmPasswordLayout.findViewById(R.id.text_input_edit_text);
+        
+        // Configure input fields
+        nameLayout.setHint(getString(R.string.name_label));
+        nameEditText.setInputType(android.text.InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+        nameEditText.setAutofillHints("name");
+        
+        emailLayout.setHint(getString(R.string.email_label));
+        emailEditText.setInputType(android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        emailEditText.setAutofillHints("email");
+        
+        passwordLayout.setHint(getString(R.string.password_label));
+        passwordLayout.setEndIconMode(com.google.android.material.textfield.TextInputLayout.END_ICON_PASSWORD_TOGGLE);
+        passwordLayout.setEndIconTintList(getColorStateList(R.color.input_hint));
+        passwordEditText.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        passwordEditText.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+        passwordEditText.setAutofillHints("password");
+        
+        confirmPasswordLayout.setHint(getString(R.string.confirm_password_label));
+        confirmPasswordLayout.setEndIconMode(com.google.android.material.textfield.TextInputLayout.END_ICON_PASSWORD_TOGGLE);
+        confirmPasswordLayout.setEndIconTintList(getColorStateList(R.color.input_hint));
+        confirmPasswordEditText.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        confirmPasswordEditText.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+        
+        // Find button and progress indicator within included layout
+        View buttonContainer = findViewById(R.id.signup_button_container);
+        signupButton = buttonContainer.findViewById(R.id.action_button);
+        signupProgressIndicator = buttonContainer.findViewById(R.id.progress_indicator);
+        // Configure button
+        signupButton.setText(getString(R.string.signup_button));
+        
         loginButton = findViewById(R.id.login_button);
-        signupProgressIndicator = findViewById(R.id.signup_progress_indicator);
 
         // Initialize ViewModel
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);

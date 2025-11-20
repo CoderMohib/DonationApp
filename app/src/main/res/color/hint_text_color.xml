@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- When focused (floating label) - darker color for better visibility -->
+    <item android:color="@color/input_hint_floating" android:state_focused="true" />
+    <item android:color="@color/input_hint_floating" android:state_enabled="true" android:state_hovered="true" />
+    <!-- When unfocused (placeholder inside field) - lighter color -->
+    <item android:color="@color/input_hint" />
+</selector>
+

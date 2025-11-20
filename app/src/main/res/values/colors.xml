@@ -68,8 +68,12 @@
     <color name="outline_focused">#0EA5E9</color>
 
     <!-- Button Colors -->
-    <color name="button_primary">#E8896F</color>
-    <color name="button_primary_pressed">#D2765A</color>
+    <!-- Auth buttons (Login/Signup) - Orange -->
+    <color name="button_auth">#E8896F</color>
+    <color name="button_auth_pressed">#D2765A</color>
+    <!-- Primary buttons (Campaigns/Profile) - Blue -->
+    <color name="button_primary">#0EA5E9</color>
+    <color name="button_primary_pressed">#0284C7</color>
     <color name="button_secondary">#4A9DAB</color>
     <color name="button_outline">#84C1C9</color>
     <color name="on_button_primary">#FFFFFF</color>
@@ -81,6 +85,7 @@
     <color name="input_outline_focused">#4A9DAB</color>
     <color name="input_text">#1E293B</color>
     <color name="input_hint">#94A3B8</color>
+    <color name="input_hint_floating">#475569</color>
     <color name="input_error">#EF4444</color>
     <color name="input_background_focused">#F8FAFC</color>
 

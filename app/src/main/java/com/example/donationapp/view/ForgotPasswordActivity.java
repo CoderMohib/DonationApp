@@ -42,9 +42,19 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         // Initialize views
         emailLayout = findViewById(R.id.email_layout);
-        emailEditText = findViewById(R.id.email_edit_text);
-        resetButton = findViewById(R.id.reset_button);
-        progressIndicator = findViewById(R.id.progress_indicator);
+        // Find child views within included layouts
+        emailEditText = emailLayout.findViewById(R.id.text_input_edit_text);
+        // Configure email field
+        emailLayout.setHint(getString(R.string.email_label));
+        emailEditText.setInputType(android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        emailEditText.setAutofillHints("email");
+        
+        // Find button and progress indicator within included layout
+        View buttonContainer = findViewById(R.id.reset_button_container);
+        resetButton = buttonContainer.findViewById(R.id.action_button);
+        progressIndicator = buttonContainer.findViewById(R.id.progress_indicator);
+        // Configure button
+        resetButton.setText(getString(R.string.reset_password_button));
         backToLoginLink = findViewById(R.id.back_to_login_link);
 
         // Back to login listener

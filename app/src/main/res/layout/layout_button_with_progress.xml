@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/button_container"
+    android:layout_width="0dp"
+    android:layout_height="@dimen/button_height"
+    tools:layout_width="match_parent">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/action_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="0dp"
+        android:letterSpacing="0.01"
+        android:stateListAnimator="@null"
+        android:text="@string/login_button"
+        android:textColor="@color/text_on_primary"
+        android:textSize="@dimen/text_size_large"
+        android:textStyle="bold"
+        app:backgroundTint="@color/button_auth"
+        app:backgroundTintMode="src_over"
+        app:cornerRadius="@dimen/button_corner_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/login_button" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress_indicator"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:indeterminate="false"
+        android:progress="0"
+        android:max="100"
+        android:visibility="gone"
+        app:indicatorColor="@color/text_on_primary"
+        app:trackColor="#33FFFFFF"
+        app:trackThickness="3.5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

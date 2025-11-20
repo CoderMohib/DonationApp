@@ -49,11 +49,30 @@ public class LoginActivity extends AppCompatActivity {
         // Initialize views
         emailLayout = findViewById(R.id.email_layout);
         passwordLayout = findViewById(R.id.password_layout);
-        emailEditText = findViewById(R.id.email_edit_text);
-        passwordEditText = findViewById(R.id.password_edit_text);
-        loginButton = findViewById(R.id.login_button);
+        // Find child views within included layouts
+        emailEditText = emailLayout.findViewById(R.id.text_input_edit_text);
+        passwordEditText = passwordLayout.findViewById(R.id.text_input_edit_text);
+        // Configure password field
+        passwordLayout.setEndIconMode(com.google.android.material.textfield.TextInputLayout.END_ICON_PASSWORD_TOGGLE);
+        passwordLayout.setEndIconTintList(getColorStateList(R.color.input_hint));
+        // Configure email field
+        emailLayout.setHint(getString(R.string.email_label));
+        emailEditText.setInputType(android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        emailEditText.setAutofillHints("email");
+        // Configure password field
+        passwordLayout.setHint(getString(R.string.password_label));
+        passwordEditText.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        passwordEditText.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+        passwordEditText.setAutofillHints("password");
+        
+        // Find button and progress indicator within included layout
+        View buttonContainer = findViewById(R.id.login_button_container);
+        loginButton = buttonContainer.findViewById(R.id.action_button);
+        loginProgressIndicator = buttonContainer.findViewById(R.id.progress_indicator);
+        // Configure button
+        loginButton.setText(getString(R.string.login_button));
+        
         signupButton = findViewById(R.id.signup_button);
-        loginProgressIndicator = findViewById(R.id.login_progress_indicator);
 
         // Initialize ViewModel
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);

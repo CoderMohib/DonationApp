@@ -35,6 +35,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.Map;
 
 /**
  * Profile Fragment - Displays and allows editing of user profile
@@ -55,6 +56,7 @@ public class ProfileFragment extends Fragment {
     private Uri imageUri;
     private byte[] imageBytes;
     private boolean imageChanged = false;
+    private boolean isInitialLoad = true;
 
     private ActivityResultLauncher<Intent> imagePickerLauncher;
     private ActivityResultLauncher<Uri> cameraLauncher;
@@ -74,13 +76,31 @@ public class ProfileFragment extends Fragment {
 
         // Initialize views
         profileImage = view.findViewById(R.id.profile_image);
+        // Set default user icon initially
+        profileImage.setImageResource(R.drawable.ic_profile);
         emailText = view.findViewById(R.id.email_text);
         nameLayout = view.findViewById(R.id.name_layout);
         phoneLayout = view.findViewById(R.id.phone_layout);
-        nameEditText = view.findViewById(R.id.name_edit_text);
-        phoneEditText = view.findViewById(R.id.phone_edit_text);
+        // Find child views within included layouts
+        nameEditText = nameLayout.findViewById(R.id.text_input_edit_text);
+        phoneEditText = phoneLayout.findViewById(R.id.text_input_edit_text);
+        // Configure input fields
+        nameLayout.setHint(getString(R.string.name_label));
+        nameEditText.setInputType(android.text.InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+        nameEditText.setAutofillHints("name");
+        phoneLayout.setHint(getString(R.string.phone_label));
+        phoneEditText.setInputType(android.text.InputType.TYPE_CLASS_PHONE);
+        phoneEditText.setAutofillHints("phone");
+        
         editImageButton = view.findViewById(R.id.edit_image_button);
-        saveButton = view.findViewById(R.id.save_button);
+        // Find button directly (no longer using include with merge)
+        saveButton = view.findViewById(R.id.primary_button);
+        if (saveButton != null) {
+            saveButton.setText(getString(R.string.save_button));
+        } else {
+            // Log error but don't crash - button functionality will be unavailable
+            android.util.Log.e("ProfileFragment", "Save button not found! Button will not be functional.");
+        }
         progressBar = view.findViewById(R.id.progress_bar);
 
         // Initialize ViewModels - safely get activity
@@ -113,7 +133,9 @@ public class ProfileFragment extends Fragment {
 
         // Set click listeners
         editImageButton.setOnClickListener(v -> showImageSourceDialog());
-        saveButton.setOnClickListener(v -> saveProfile());
+        if (saveButton != null) {
+            saveButton.setOnClickListener(v -> saveProfile());
+        }
 
         // Observe ViewModels
         observeViewModels();
@@ -123,6 +145,8 @@ public class ProfileFragment extends Fragment {
         if (currentUser != null) {
             emailText.setText(currentUser.getEmail());
             profileViewModel.loadUserProfile(currentUser.getUid());
+            // Mark that initial load is complete after a short delay
+            view.postDelayed(() -> isInitialLoad = false, 500);
         }
     }
 
@@ -136,7 +160,9 @@ public class ProfileFragment extends Fragment {
         profileViewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading != null) {
                 progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-                saveButton.setEnabled(!isLoading);
+                if (saveButton != null) {
+                    saveButton.setEnabled(!isLoading);
+                }
             }
         });
 
@@ -150,11 +176,17 @@ public class ProfileFragment extends Fragment {
         });
 
         profileViewModel.getUpdateSuccess().observe(getViewLifecycleOwner(), success -> {
-            if (success != null && success) {
+            if (success != null && success && !isInitialLoad) {
                 android.content.Context context = getContext();
                 if (context != null) {
                     DialogHelper.showSuccessDialog(context, "Success", "Profile updated successfully!", null);
+                    // Reset the success flag after showing dialog
+                    profileViewModel.resetUpdateSuccess();
                 }
+            } else if (success != null && success && isInitialLoad) {
+                // Reset on initial load without showing dialog
+                profileViewModel.resetUpdateSuccess();
+                isInitialLoad = false;
             }
         });
     }
@@ -163,9 +195,15 @@ public class ProfileFragment extends Fragment {
         nameEditText.setText(user.getName());
         phoneEditText.setText(user.getPhone());
 
-        // Load profile image
+        // Load profile image or show default icon
         if (user.getProfileImage() != null && !user.getProfileImage().isEmpty()) {
-            Picasso.get().load(user.getProfileImage()).into(profileImage);
+            Picasso.get().load(user.getProfileImage())
+                    .placeholder(R.drawable.ic_profile)
+                    .error(R.drawable.ic_profile)
+                    .into(profileImage);
+        } else {
+            // Show default user icon when no profile image
+            profileImage.setImageResource(R.drawable.ic_profile);
         }
     }
 
@@ -254,16 +292,18 @@ public class ProfileFragment extends Fragment {
             return;
         }
 
-        // Temporary fallback: Update profile without image upload (works without Storage)
-        // If image was changed, set profileImage to empty (image won't be uploaded)
+        // Update all fields at once using a single call to avoid multiple success dialogs
+        Map<String, Object> updates = new java.util.HashMap<String, Object>();
+        updates.put("name", name);
+        updates.put("phone", phone != null && !phone.isEmpty() ? phone : "");
+        
+        // If image was changed, set profileImage to empty (image won't be uploaded without Storage)
         if (imageChanged && imageBytes != null) {
-            profileViewModel.updateProfileImage(currentUser.getUid(), ""); // Empty imageUrl when Storage is disabled
+            updates.put("profileImage", ""); // Empty imageUrl when Storage is disabled
         }
-        // Update name and phone
-        profileViewModel.updateUserName(currentUser.getUid(), name);
-        if (!phone.isEmpty()) {
-            profileViewModel.updateUserPhone(currentUser.getUid(), phone);
-        }
+        
+        // Single update call for all fields
+        profileViewModel.updateUserProfile(currentUser.getUid(), updates);
     }
 }
 

@@ -56,7 +56,7 @@
         <item name="boxCornerRadiusTopEnd">@dimen/input_corner_radius</item>
         <item name="boxCornerRadiusBottomStart">@dimen/input_corner_radius</item>
         <item name="boxCornerRadiusBottomEnd">@dimen/input_corner_radius</item>
-        <item name="hintTextColor">@color/input_hint</item>
+        <item name="hintTextColor">@color/hint_text_color</item>
     </style>
 
     <!-- Button Style -->

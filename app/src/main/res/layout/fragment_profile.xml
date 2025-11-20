@@ -120,107 +120,41 @@
                         app:layout_constraintTop_toBottomOf="@id/email_text" />
 
                     <!-- Name Input -->
-                    <com.google.android.material.textfield.TextInputLayout
+                    <include
                         android:id="@+id/name_layout"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        layout="@layout/layout_text_input"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_subtitle_bottom"
-                        android:hint="@string/name_label"
-                        app:boxCornerRadiusBottomEnd="@dimen/input_corner_radius"
-                        app:boxCornerRadiusBottomStart="@dimen/input_corner_radius"
-                        app:boxCornerRadiusTopEnd="@dimen/input_corner_radius"
-                        app:boxCornerRadiusTopStart="@dimen/input_corner_radius"
-                        app:boxStrokeColor="@color/input_outline"
-                        app:boxStrokeWidth="@dimen/input_stroke_width"
-                        app:boxStrokeWidthFocused="@dimen/input_stroke_width_focused"
-                        app:errorTextColor="@color/input_error"
-                        app:hintTextColor="@color/input_hint"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/profile_info_title">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/name_edit_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:autofillHints="name"
-                            android:inputType="textPersonName"
-                            android:minHeight="@dimen/input_height"
-                            android:paddingStart="@dimen/input_padding_horizontal"
-                            android:paddingEnd="@dimen/input_padding_horizontal"
-                            android:textColor="@color/input_text"
-                            android:textColorHint="@color/input_hint"
-                            android:textSize="@dimen/text_size_body" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
+                        app:layout_constraintTop_toBottomOf="@id/profile_info_title" />
 
                     <!-- Phone Input -->
-                    <com.google.android.material.textfield.TextInputLayout
+                    <include
                         android:id="@+id/phone_layout"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        layout="@layout/layout_text_input"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_input_between"
-                        android:hint="@string/phone_label"
-                        app:boxCornerRadiusBottomEnd="@dimen/input_corner_radius"
-                        app:boxCornerRadiusBottomStart="@dimen/input_corner_radius"
-                        app:boxCornerRadiusTopEnd="@dimen/input_corner_radius"
-                        app:boxCornerRadiusTopStart="@dimen/input_corner_radius"
-                        app:boxStrokeColor="@color/input_outline"
-                        app:boxStrokeWidth="@dimen/input_stroke_width"
-                        app:boxStrokeWidthFocused="@dimen/input_stroke_width_focused"
-                        app:errorTextColor="@color/input_error"
-                        app:hintTextColor="@color/input_hint"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/name_layout">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/phone_edit_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:autofillHints="phone"
-                            android:inputType="phone"
-                            android:minHeight="@dimen/input_height"
-                            android:paddingStart="@dimen/input_padding_horizontal"
-                            android:paddingEnd="@dimen/input_padding_horizontal"
-                            android:textColor="@color/input_text"
-                            android:textColorHint="@color/input_hint"
-                            android:textSize="@dimen/text_size_body" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
+                        app:layout_constraintTop_toBottomOf="@id/name_layout" />
 
                     <!-- Save Button Container -->
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/save_button_container"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/primary_button"
                         android:layout_width="0dp"
-                        android:layout_height="@dimen/button_height"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_button_top"
+                        android:text="@string/save_button"
+                        style="@style/Widget.Material3.Button"
+                        app:backgroundTint="@color/button_primary"
+                        android:textColor="@color/on_button_primary"
+                        app:cornerRadius="@dimen/button_corner_radius"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/phone_layout">
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/save_button"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:elevation="0dp"
-                            android:letterSpacing="0.01"
-                            android:stateListAnimator="@null"
-                            android:text="@string/save_button"
-                            android:textColor="@color/text_on_primary"
-                            android:textSize="@dimen/text_size_large"
-                            android:textStyle="bold"
-                            app:backgroundTint="@color/button_primary"
-                            app:backgroundTintMode="src_over"
-                            app:cornerRadius="@dimen/button_corner_radius"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                        app:layout_constraintTop_toBottomOf="@id/phone_layout" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
